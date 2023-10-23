@@ -68,8 +68,8 @@ async def on_raw_message_edit(rawMessage):
     editedMessage = await client.get_partial_messageable(rawMessage.channel_id).fetch_message(rawMessage.message_id)
     if(editedMessage.author == client.user):
         return
-    #If the message was edited more than 1 second ago then you can edit the bot message- reason being removing the embeds from the OG message (in the on_message event)
-    if(editedMessage.created_at > (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=1))): # 
+    #If the message was edited more than x second(s) ago then you can edit the bot message- reason being removing the embeds from the OG message (in the on_message event)
+    if(editedMessage.created_at > (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=2))): # 
         return
     if (re.findall(f'{twitter}.\S*|{xcom}.\S*', editedMessage.content)) != []:
             async for postMessages in editedMessage.channel.history(limit = 2, after = editedMessage):
