@@ -4,8 +4,6 @@ import discord
 import datetime
 import re
 import asyncio
-import os
-
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -24,30 +22,31 @@ xcom = 'https://x.'
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     completeMessage = ''
-    if (linkSubstring := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
-        linkSubstring = removeSpoiledMessages(linkSubstring, getSpoiledMessages(message))
-        for singleString in linkSubstring:
+    if (unformattedLinks := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
+        unformattedLinks = removeSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
+        for singleLink in unformattedLinks:
             #Check if link is twitter or x.com, would need to add another elif for a new domain
-            if re.findall(f'{twitter}.*', singleString) != []:
-                singleString = singleString[len(twitter):]
+            if re.findall(f'{twitter}.*', singleLink) != []:
+                singleLink = singleLink[len(twitter):]
             else:
-                singleString = singleString[len(xcom):]
+                singleLink = singleLink[len(xcom):]
             #Add the fx link to the message
-            completeMessage += 'https://fxtwitter.' + singleString + '\n'
+            completeMessage += 'https://fxtwitter.' + singleLink + '\n'
         if(completeMessage == ''):
             completeMessage = None
         return completeMessage
     
     #awful bandaid fix
 def getSpoiledMessages(message):
-    spoiled = re.findall('\|\|.*?\|\|', message.content)
+    spoiled = re.findall('\|\|.*?\|\|', message.content) #Grabs *any* message in spoiler tags
     completeSpoiledMessages = ''
     for spoiledMessage in spoiled:
         completeSpoiledMessages += spoiledMessage
+    #makes the spoiler tag message into one string, I couldn't find their toString probably does exist
     return completeSpoiledMessages
 
 def removeSpoiledMessages(unformattedLinks, spoiled):
-    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled)
+    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
     for link in spoiledList:
         if link in unformattedLinks:
             unformattedLinks.remove(link)
