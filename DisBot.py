@@ -40,12 +40,12 @@ def getSpoiledMessages(message):
     spoiled = re.findall('\|\|.*?\|\|', message.content)
     return spoiled
 
-def removeSpoiledMessages(message, spoiled):
-    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)
+def removeSpoiledMessages(unformattedLinks, spoiled):
+    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled)
     for link in spoiledList:
-        if link in message:
-            message.remove(link)
-    return message
+        if link in unformattedLinks:
+            unformattedLinks.remove(link)
+    return unformattedLinks
 
 @client.event
 async def on_ready():
