@@ -44,7 +44,7 @@ async def on_message(message):
     #Check's to make sure the bot doesn't respond to itself
     if message.author == client.user:
         return
-    completeMessage = (f'{getFormattedMessage(message)}')
+    completeMessage = getFormattedMessage(message)
     if(completeMessage != None):
         await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
         await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
