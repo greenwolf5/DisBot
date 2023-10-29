@@ -36,9 +36,13 @@ def getFormattedMessage(message):
             completeMessage += 'https://fxtwitter.' + singleString + '\n'
         return completeMessage
     
+    #awful bandaid fix
 def getSpoiledMessages(message):
     spoiled = re.findall('\|\|.*?\|\|', message.content)
-    return spoiled.string()
+    completeSpoiledMessages = ''
+    for spoiledMessage in spoiled:
+        completeSpoiledMessages += spoiledMessage
+    return completeSpoiledMessages
 
 def removeSpoiledMessages(unformattedLinks, spoiled):
     spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled)
