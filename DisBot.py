@@ -11,6 +11,10 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+#Websites that help
+#https://regex101.com/r/BFJBpZ/1 regex help
+#https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
+
 #Two domains this works on not modular to add a new domain but not too difficult
 twitter = 'https://twitter.'
 xcom = 'https://x.'
