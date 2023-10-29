@@ -58,7 +58,7 @@ async def on_message(message):
         return
     if(completeMessage := getFormattedMessage(message)) != None:
         return
-    completeMessage = + '@silent' + completeMessage
+    completeMessage = "@silent" + completeMessage
     if(completeMessage != None):
         await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
         await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
