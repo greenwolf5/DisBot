@@ -34,8 +34,8 @@ def getFormattedMessage(message):
                 singleString = singleString[len(xcom):]
             #Add the fx link to the message
             completeMessage += 'https://fxtwitter.' + singleString + '\n'
-        if(completeMessage == []):
-            completeMessage = ''
+        if(completeMessage == ''):
+            completeMessage = None
         return completeMessage
     
     #awful bandaid fix
@@ -63,7 +63,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     completeMessage = getFormattedMessage(message)
-    if(completeMessage != ''): #This is important b/c I remove messages from removedSpoiledMessages()
+    if(completeMessage != None): #This is important b/c I remove messages from removedSpoiledMessages()
         print(f'This is the completed message, it might be empty: "{completeMessage}"')
         await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
         await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
