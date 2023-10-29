@@ -4,8 +4,6 @@ import discord
 import datetime
 import re
 import asyncio
-import os
-
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -23,17 +21,36 @@ xcom = 'https://x.'
 
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
-    if (linkSubstring := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
-        completeMessage = ''
-        for singleString in linkSubstring:
+    completeMessage = ''
+    if (unformattedLinks := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
+        unformattedLinks = removeSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
+        for singleLink in unformattedLinks:
             #Check if link is twitter or x.com, would need to add another elif for a new domain
-            if re.findall(f'{twitter}.*', singleString) != []:
-                singleString = singleString[len(twitter):]
+            if re.findall(f'{twitter}.*', singleLink) != []:
+                singleLink = singleLink[len(twitter):]
             else:
-                singleString = singleString[len(xcom):]
+                singleLink = singleLink[len(xcom):]
             #Add the fx link to the message
-            completeMessage += 'https://fxtwitter.' + singleString + '\n'
+            completeMessage += 'https://fxtwitter.' + singleLink + '\n'
+        if(completeMessage == ''):
+            completeMessage = None
         return completeMessage
+    
+    #awful bandaid fix
+def getSpoiledMessages(message):
+    spoiled = re.findall('\|\|.*?\|\|', message.content) #Grabs *any* message in spoiler tags
+    completeSpoiledMessages = ''
+    for spoiledMessage in spoiled:
+        completeSpoiledMessages += spoiledMessage
+    #makes the spoiler tag message into one string, I couldn't find their toString probably does exist
+    return completeSpoiledMessages
+
+def removeSpoiledMessages(unformattedLinks, spoiled):
+    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
+    for link in spoiledList:
+        if link in unformattedLinks:
+            unformattedLinks.remove(link)
+    return unformattedLinks
 
 @client.event
 async def on_ready():
@@ -45,7 +62,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     completeMessage = getFormattedMessage(message)
-    if(completeMessage != None):
+    if(completeMessage != None): #This is important b/c I remove messages from removedSpoiledMessages()
         await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
         await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
         await message.reply(completeMessage, allowed_mentions=discord.AllowedMentions.none(), silent = True) #Sends the message then, removes the mention so it doesn't @ the person
