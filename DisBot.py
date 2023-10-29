@@ -23,8 +23,8 @@ xcom = 'https://x.'
 
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
+    completeMessage = ''
     if (linkSubstring := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
-        completeMessage = ''
         linkSubstring = removeSpoiledMessages(linkSubstring, getSpoiledMessages(message))
         for singleString in linkSubstring:
             #Check if link is twitter or x.com, would need to add another elif for a new domain
@@ -61,7 +61,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     completeMessage = getFormattedMessage(message)
-    if(completeMessage != None): #This is important b/c I remove messages from removedSpoiledMessages()
+    if(completeMessage != ''): #This is important b/c I remove messages from removedSpoiledMessages()
         print(f'This is the completed message, it might be empty: "{completeMessage}"')
         await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
         await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
