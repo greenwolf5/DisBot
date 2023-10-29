@@ -64,7 +64,6 @@ async def on_message(message):
         return
     completeMessage = getFormattedMessage(message)
     if(completeMessage != None): #This is important b/c I remove messages from removedSpoiledMessages()
-        print(f'This is the completed message, it might be empty: "{completeMessage}"')
         await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
         await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
         await message.reply(completeMessage, allowed_mentions=discord.AllowedMentions.none(), silent = True) #Sends the message then, removes the mention so it doesn't @ the person
