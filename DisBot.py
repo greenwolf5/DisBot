@@ -34,7 +34,7 @@ def getFormattedMessage(message):
                 singleString = singleString[len(xcom):]
             #Add the fx link to the message
             completeMessage += 'https://fxtwitter.' + singleString + '\n'
-        if(completeMessage == None):
+        if(completeMessage == []):
             completeMessage = ''
         return completeMessage
     
