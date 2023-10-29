@@ -38,7 +38,7 @@ def getFormattedMessage(message):
     
 def getSpoiledMessages(message):
     spoiled = re.findall('\|\|.*?\|\|', message.content)
-    return spoiled
+    return spoiled.string()
 
 def removeSpoiledMessages(unformattedLinks, spoiled):
     spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled)
