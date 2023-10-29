@@ -11,6 +11,8 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+## Bug found, if a link is spoilered, it will still show link, check to see if the message has a || and if it does, check if a link is between the other ||
+
 #Websites that help
 #https://regex101.com/r/BFJBpZ/1 regex help
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
@@ -42,7 +44,7 @@ async def on_message(message):
     #Check's to make sure the bot doesn't respond to itself
     if message.author == client.user:
         return
-    completeMessage = getFormattedMessage(message)
+    completeMessage = (f'@silent {getFormattedMessage(message)}')
     if(completeMessage != None):
         await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
         await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
