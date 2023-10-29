@@ -56,13 +56,11 @@ async def on_message(message):
     #Check's to make sure the bot doesn't respond to itself
     if message.author == client.user:
         return
-    if(completeMessage := getFormattedMessage(message)) != None:
-        return
-    completeMessage = "@silent" + completeMessage
+    completeMessage = getFormattedMessage(message)
     if(completeMessage != None):
         await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
         await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
-        await message.reply(completeMessage, allowed_mentions=discord.AllowedMentions.none()) #Sends the message then, removes the mention so it doesn't @ the person
+        await message.reply(completeMessage, allowed_mentions=discord.AllowedMentions.none(), silent = True) #Sends the message then, removes the mention so it doesn't @ the person
 
 @client.event
 async def on_raw_message_delete(rawMessage):
