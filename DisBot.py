@@ -25,7 +25,7 @@ def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     if (linkSubstring := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
         completeMessage = ''
-        message = removeSpoiledMessages(message, getSpoiledMessages(message))
+        linkSubstring = removeSpoiledMessages(linkSubstring, getSpoiledMessages(message))
         for singleString in linkSubstring:
             #Check if link is twitter or x.com, would need to add another elif for a new domain
             if re.findall(f'{twitter}.*', singleString) != []:
