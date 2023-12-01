@@ -14,37 +14,45 @@ client = discord.Client(intents=intents)
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
 
 #Two domains this works on not modular to add a new domain but not too difficult
-twitter = 'https://twitter.com'
-xcom = 'https://x.com'
+TWITTER = 'https://twitter.com/'
+XCOM = 'https://x.com/'
+WWWTWITTER = 'https://www.twitter.com/'
+WWWXCOM = 'https://www.x.com/'
+
+def regexTwitterLinks(stringToRegex):
+    return re.findall(f'{TWITTER}.\\S*|{XCOM}.\\S*|{WWWTWITTER}.\\S*|{WWWXCOM}.\\S*', stringToRegex)
 
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     completeMessage = ''
-    if (unformattedLinks := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
+    if (unformattedLinks := regexTwitterLinks(message.content)) != []:
         #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
         unformattedLinks = removeSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
         for singleLink in unformattedLinks:
             #Check if link is twitter or x.com, would need to add another elif for a new domain
             #if re.findall(f'SPOILED{twitter}.*', singleLink) != []:
             #    singleLink = singleLink[len("SPOILED" + twitter):]
-            #    completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
-            if re.findall(f'{twitter}.*', singleLink) != []:
-                singleLink = singleLink[len(twitter):]
-                completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
+            #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
+            if re.findall(f'{TWITTER}.*', singleLink) != []:
+                singleLink = singleLink[len(TWITTER):]
             #elif re.findall(f'SPOILED{xcom}.*', singleLink) != []:
             #    singleLink = singleLink[len("SPOILED" + xcom):]
             #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
-            else:
-                singleLink = singleLink[len(xcom):]
-                completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
+            elif re.findall(f'{XCOM}.*',singleLink) != []:
+                singleLink = singleLink[len(XCOM):]
+            elif re.findall(f'{WWWTWITTER}.*', singleLink) != []:
+                singleLink = singleLink[len(WWWTWITTER):]
+            elif re.findall(f'{WWWXCOM}.*', singleLink) != []:
+                singleLink = singleLink[len(WWWXCOM):]
             #Add the fx link to the message
+            completeMessage += 'https://fxtwitter.com/' + singleLink + '\n'
         if(completeMessage == ''):
             completeMessage = None
         return completeMessage
     
     #awful bandaid fix
 def getSpoiledMessages(message):
-    spoiled = re.findall('\|\|.*?\|\|', message.content) #Grabs *any* message in spoiler tags
+    spoiled = re.findall('\\|\\|.*?\\|\\|', message.content) #Grabs *any* message in spoiler tags
     completeSpoiledMessages = ''
     for spoiledMessage in spoiled:
         completeSpoiledMessages += spoiledMessage
@@ -52,7 +60,7 @@ def getSpoiledMessages(message):
     return completeSpoiledMessages
 
 def removeSpoiledMessages(unformattedLinks, spoiled):
-    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
+    spoiledList = regexTwitterLinks(spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
     for link in spoiledList:
         if link in unformattedLinks:
             unformattedLinks.remove(link)
@@ -96,7 +104,7 @@ async def on_raw_message_delete(rawMessage):
                         await deleteMessage.delete()
     else:
         message = rawMessage.cached_message
-        if (re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
+        if (regexTwitterLinks(message.content)) != []:
             async for oldMessages in message.channel.history(limit = 2, after = message):
                 if oldMessages.author == client.user:
                     await oldMessages.delete() 
@@ -110,7 +118,7 @@ async def on_raw_message_edit(rawMessage):
     #If the message was edited more than x second(s) ago then you can edit the bot message- reason being removing the embeds from the OG message (in the on_message event)
     if(editedMessage.created_at > (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=2))): # 
         return
-    if (re.findall(f'{twitter}.\S*|{xcom}.\S*', editedMessage.content)) != []:
+    if (regexTwitterLinks(editedMessage.content)) != []:
             async for postMessages in editedMessage.channel.history(limit = 2, after = editedMessage):
                 if postMessages.author == client.user:
                     completeMessage = getFormattedMessage(editedMessage)
