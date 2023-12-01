@@ -9,29 +9,35 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-## Bug found, if a link is spoilered, it will still show link, check to see if the message has a || and if it does, check if a link is between the other ||
-
 #Websites that help
 #https://regex101.com/r/BFJBpZ/1 regex help
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
 
 #Two domains this works on not modular to add a new domain but not too difficult
-twitter = 'https://twitter.'
-xcom = 'https://x.'
+twitter = 'https://twitter.com'
+xcom = 'https://x.com'
 
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     completeMessage = ''
     if (unformattedLinks := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
+        #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
         unformattedLinks = removeSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
         for singleLink in unformattedLinks:
             #Check if link is twitter or x.com, would need to add another elif for a new domain
+            #if re.findall(f'SPOILED{twitter}.*', singleLink) != []:
+            #    singleLink = singleLink[len("SPOILED" + twitter):]
+            #    completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
             if re.findall(f'{twitter}.*', singleLink) != []:
                 singleLink = singleLink[len(twitter):]
+                completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
+            #elif re.findall(f'SPOILED{xcom}.*', singleLink) != []:
+            #    singleLink = singleLink[len("SPOILED" + xcom):]
+            #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
             else:
                 singleLink = singleLink[len(xcom):]
+                completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
             #Add the fx link to the message
-            completeMessage += 'https://fxtwitter.' + singleLink + '\n'
         if(completeMessage == ''):
             completeMessage = None
         return completeMessage
@@ -51,6 +57,16 @@ def removeSpoiledMessages(unformattedLinks, spoiled):
         if link in unformattedLinks:
             unformattedLinks.remove(link)
     return unformattedLinks
+
+#Turns out, this idea is useless due to weird discord behavior. If one link is spoiled they ***ALL*** are spoiled, making these a useless feature.
+#def spoilSpoiledMessages(unformattedLinks, spoiled):
+#    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
+#    for link in spoiledList:
+#        if link in unformattedLinks:   
+#            spoiledLinkIndex = unformattedLinks.index(link)
+#            unformattedLinks.remove(link)
+#            unformattedLinks.insert(spoiledLinkIndex, ("SPOILED" + link))
+#    return unformattedLinks
 
 @client.event
 async def on_ready():
