@@ -9,8 +9,6 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-## Bug found, if a link is spoilered, it will still show link, check to see if the message has a || and if it does, check if a link is between the other ||
-
 #Websites that help
 #https://regex101.com/r/BFJBpZ/1 regex help
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
@@ -26,12 +24,19 @@ def getFormattedMessage(message):
         unformattedLinks = spoilSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
         for singleLink in unformattedLinks:
             #Check if link is twitter or x.com, would need to add another elif for a new domain
+            #if re.findall(f'SPOILED{twitter}.*', singleLink) != []:
+            #    singleLink = singleLink[len("SPOILED" + twitter):]
+            #    completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
             if re.findall(f'{twitter}.*', singleLink) != []:
                 singleLink = singleLink[len(twitter):]
+                completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
+            #elif re.findall(f'SPOILED{xcom}.*', singleLink) != []:
+            #    singleLink = singleLink[len("SPOILED" + xcom):]
+            #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
             else:
                 singleLink = singleLink[len(xcom):]
+                completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
             #Add the fx link to the message
-            completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
         if(completeMessage == ''):
             completeMessage = None
         return completeMessage
@@ -45,7 +50,6 @@ def getSpoiledMessages(message):
     #makes the spoiler tag message into one string, I couldn't find their toString probably does exist
     return completeSpoiledMessages
 
-    #Removed, replaced with function below
 def removeSpoiledMessages(unformattedLinks, spoiled):
     spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
     for link in spoiledList:
@@ -53,14 +57,15 @@ def removeSpoiledMessages(unformattedLinks, spoiled):
             unformattedLinks.remove(link)
     return unformattedLinks
 
-def spoilSpoiledMessages(unformattedLinks, spoiled):
-    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
-    for link in spoiledList:
-        if link in unformattedLinks:
-            
-            spoiledLinkIndex = unformattedLinks.index()
-            unformattedLinks.insert(spoiledLinkIndex, ("||" + link  + "||"))
-    return unformattedLinks
+#Turns out, this idea is useless due to weird discord behavior. If one link is spoiled they ***ALL*** are spoiled, making these a useless feature.
+#def spoilSpoiledMessages(unformattedLinks, spoiled):
+#    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
+#    for link in spoiledList:
+#        if link in unformattedLinks:   
+#            spoiledLinkIndex = unformattedLinks.index(link)
+#            unformattedLinks.remove(link)
+#            unformattedLinks.insert(spoiledLinkIndex, ("SPOILED" + link))
+#    return unformattedLinks
 
 @client.event
 async def on_ready():
