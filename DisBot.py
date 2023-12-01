@@ -14,30 +14,49 @@ client = discord.Client(intents=intents)
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
 
 #Two domains this works on not modular to add a new domain but not too difficult
-twitter = 'https://twitter.com'
-xcom = 'https://x.com'
-
+twitter = 'https://twitter.com/'
+xcom = 'https://x.com/'
+wwwTwitter = 'https://wwww.twitter.com/'
+wwwXcom = 'https://www.x.com/'
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     completeMessage = ''
-    if (unformattedLinks := re.findall(f'{twitter}.\S*|{xcom}.\S*', message.content)) != []:
+    if (unformattedLinks := re.findall(f'{twitter}.\S*|{xcom}.\S*|{wwwTwitter}.\S*|{wwwXcom}.\S*', message.content)) != []:
         #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
         unformattedLinks = removeSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
         for singleLink in unformattedLinks:
             #Check if link is twitter or x.com, would need to add another elif for a new domain
             #if re.findall(f'SPOILED{twitter}.*', singleLink) != []:
             #    singleLink = singleLink[len("SPOILED" + twitter):]
+            #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
+            #if re.findall(f'{twitter}.*', singleLink) != []:
+            #    singleLink = singleLink[len(twitter):]
             #    completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
-            if re.findall(f'{twitter}.*', singleLink) != []:
-                singleLink = singleLink[len(twitter):]
-                completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
             #elif re.findall(f'SPOILED{xcom}.*', singleLink) != []:
             #    singleLink = singleLink[len("SPOILED" + xcom):]
             #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
-            else:
-                singleLink = singleLink[len(xcom):]
-                completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
+            #elif re.findall(f'{xcom}.*',singleLink) != []:
+            #    singleLink = singleLink[len(xcom):]
+            #    completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
+            #elif re.findall(f'{wwwTwitter}.*', singleLink) != []:
+            #    singleLink = singleLink[len(wwwTwitter):]
+            #    completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
+            #elif re.findall(f'{wwwXcom}.*', singleLink) != []:
+            #    singleLink = singleLink[len(wwwXcom):]
+            #    completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
             #Add the fx link to the message
+            
+            match singleLink:
+                case str(twitter):
+                    singleLink = singleLink[len(twitter):]
+                case str(xcom):
+                    singleLink = singleLink[len(xcom):]
+                case str(wwwTwitter):
+                    singleLink = singleLink[len(wwwTwitter):]
+                case str(wwwXcom):
+                    singleLink = singleLink[len(wwwXcom):]
+            completeMessage += 'https://fxtwitter.com' + singleLink + '\n'       
+            
         if(completeMessage == ''):
             completeMessage = None
         return completeMessage
