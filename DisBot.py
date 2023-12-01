@@ -16,8 +16,8 @@ client = discord.Client(intents=intents)
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
 
 #Two domains this works on not modular to add a new domain but not too difficult
-twitter = 'https://twitter.'
-xcom = 'https://x.'
+twitter = 'https://twitter.com'
+xcom = 'https://x.com'
 
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
@@ -31,7 +31,7 @@ def getFormattedMessage(message):
             else:
                 singleLink = singleLink[len(xcom):]
             #Add the fx link to the message
-            completeMessage += 'https://fxtwitter.' + singleLink + '\n'
+            completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
         if(completeMessage == ''):
             completeMessage = None
         return completeMessage
@@ -45,11 +45,21 @@ def getSpoiledMessages(message):
     #makes the spoiler tag message into one string, I couldn't find their toString probably does exist
     return completeSpoiledMessages
 
+    #Removed, replaced with function below
 def removeSpoiledMessages(unformattedLinks, spoiled):
     spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
     for link in spoiledList:
         if link in unformattedLinks:
             unformattedLinks.remove(link)
+    return unformattedLinks
+
+def spoilSpoiledMessages(unformattedLinks, spoiled):
+    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
+    for link in spoiledList:
+        if link in unformattedLinks:
+            
+            spoiledLinkIndex = unformattedLinks.index()
+            unformattedLinks.insert(spoiledLinkIndex, ("||" + link  + "||"))
     return unformattedLinks
 
 @client.event
