@@ -30,7 +30,7 @@ def getFormattedMessage(message):
             #    completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
             if re.findall(f'{twitter}.*', singleLink) != []:
                 singleLink = singleLink[len(twitter):]
-                completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
+                completeMessage += 'https://fxtwitter.com' + singleLink + '\n'
             #elif re.findall(f'SPOILED{xcom}.*', singleLink) != []:
             #    singleLink = singleLink[len("SPOILED" + xcom):]
             #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
