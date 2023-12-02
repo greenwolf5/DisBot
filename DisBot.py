@@ -17,7 +17,7 @@ client = discord.Client(intents=intents)
 TWITTER = 'twitter'
 XCOM = 'x'
 def regexTwitterLinks(stringToRegex):
-    return re.findall(f"://(?:www.)?(?:{XCOM}|(?:{TWITTER}))\.com/(.\S*)", stringToRegex)
+    return re.findall(f"://(?:www.)?(?:{XCOM}|(?:{TWITTER}))\\.com/(.\\S*)", stringToRegex)
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     completeMessage = ''
