@@ -14,14 +14,10 @@ client = discord.Client(intents=intents)
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
 
 #Two domains this works on not modular to add a new domain but not too difficult
-TWITTER = 'https://twitter.com/'
-XCOM = 'https://x.com/'
-WWWTWITTER = 'https://www.twitter.com/'
-WWWXCOM = 'https://www.x.com/'
-
+TWITTER = 'twitter'
+XCOM = 'x'
 def regexTwitterLinks(stringToRegex):
-    return re.findall(f'{TWITTER}.\\S*|{XCOM}.\\S*|{WWWTWITTER}.\\S*|{WWWXCOM}.\\S*', stringToRegex)
-
+    return re.findall(f"://(?:www.)?(?:{XCOM}|(?:{TWITTER}))\.com/(.\S*)", stringToRegex)
 def getFormattedMessage(message):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     completeMessage = ''
@@ -29,22 +25,6 @@ def getFormattedMessage(message):
         #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
         unformattedLinks = removeSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
         for singleLink in unformattedLinks:
-            #Check if link is twitter or x.com, would need to add another elif for a new domain
-            #if re.findall(f'SPOILED{twitter}.*', singleLink) != []:
-            #    singleLink = singleLink[len("SPOILED" + twitter):]
-            #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
-            if re.findall(f'{TWITTER}.*', singleLink) != []:
-                singleLink = singleLink[len(TWITTER):]
-            #elif re.findall(f'SPOILED{xcom}.*', singleLink) != []:
-            #    singleLink = singleLink[len("SPOILED" + xcom):]
-            #    completeMessage += '||https://fxtwitter.com' + singleLink + '||\n'
-            elif re.findall(f'{XCOM}.*',singleLink) != []:
-                singleLink = singleLink[len(XCOM):]
-            elif re.findall(f'{WWWTWITTER}.*', singleLink) != []:
-                singleLink = singleLink[len(WWWTWITTER):]
-            elif re.findall(f'{WWWXCOM}.*', singleLink) != []:
-                singleLink = singleLink[len(WWWXCOM):]
-            #Add the fx link to the message
             completeMessage += 'https://fxtwitter.com/' + singleLink + '\n'
         if(completeMessage == ''):
             completeMessage = None
@@ -66,16 +46,6 @@ def removeSpoiledMessages(unformattedLinks, spoiled):
             unformattedLinks.remove(link)
     return unformattedLinks
 
-#Turns out, this idea is useless due to weird discord behavior. If one link is spoiled they ***ALL*** are spoiled, making these a useless feature.
-#def spoilSpoiledMessages(unformattedLinks, spoiled):
-#    spoiledList = re.findall(f'{twitter}.\S*|{xcom}.\S*', spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
-#    for link in spoiledList:
-#        if link in unformattedLinks:   
-#            spoiledLinkIndex = unformattedLinks.index(link)
-#            unformattedLinks.remove(link)
-#            unformattedLinks.insert(spoiledLinkIndex, ("SPOILED" + link))
-#    return unformattedLinks
-
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
@@ -83,13 +53,12 @@ async def on_ready():
 @client.event
 async def on_message(message):
     #Check's to make sure the bot doesn't respond to itself
-    if message.author == client.user:
-        return
-    completeMessage = getFormattedMessage(message)
-    if(completeMessage != None): #This is important b/c I remove messages from removedSpoiledMessages()
-        await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
-        await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
-        await message.reply(completeMessage, allowed_mentions=discord.AllowedMentions.none(), silent = True) #Sends the message then, removes the mention so it doesn't @ the person
+    if message.author != client.user:   
+        completeMessage = getFormattedMessage(message)
+        if(completeMessage != None): #This is important b/c I remove messages from removedSpoiledMessages()
+            await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
+            await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
+            await message.reply(completeMessage, allowed_mentions=discord.AllowedMentions.none(), silent = True) #Sends the message then, removes the mention so it doesn't @ the person
 
 @client.event
 async def on_raw_message_delete(rawMessage):
