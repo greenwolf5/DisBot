@@ -23,9 +23,12 @@ def getFormattedMessage(message):
     completeMessage = ''
     if (unformattedLinks := regexTwitterLinks(message.content)) != []:
         #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
-        unformattedLinks = removeSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
+        unformattedLinks = spoilSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
         for singleLink in unformattedLinks:
-            completeMessage += 'https://fxtwitter.com/' + singleLink + '\n'
+            if(singleLink[len(singleLink)-1] != "|"):
+                completeMessage += 'https://fxtwitter.com/' + singleLink + '\n'
+            else:
+                completeMessage += '||https://fxtwitter.com/' + singleLink + '\n'
         if(completeMessage == ''):
             completeMessage = None
         return completeMessage
@@ -44,6 +47,15 @@ def removeSpoiledMessages(unformattedLinks, spoiled):
     for link in spoiledList:
         if link in unformattedLinks:
             unformattedLinks.remove(link)
+    return unformattedLinks
+
+def spoilSpoiledMessages(unformattedLinks, spoiled):
+    spoiledList = regexTwitterLinks(spoiled) #Grabs all twitter links in the spoiler tags (why in a separate function? b/c... idk)
+    for link in spoiledList:
+        if link in unformattedLinks:   
+            spoiledLinkIndex = unformattedLinks.index(link)
+            unformattedLinks.remove(link)
+            unformattedLinks.insert(spoiledLinkIndex, (link+"||"))
     return unformattedLinks
 
 @client.event
