@@ -22,22 +22,24 @@ def regexTwitterLinks(stringToRegex):
     return re.findall(f"(?:http(?:s)?)?://(?:www.)?(?:{XCOM}|{TWITTER})\\.com/(.\\S*)", stringToRegex)
 def getFormattedMessage(message, author):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
-    completeMessage = (f'{author} posted\n')
-    freeMessages, unformattedLinks = regexFreeMessages(message.content)
-    if(freeMessages[0] != ''):
-        completeMessage += (f'{freeMessages[0]}')
-        if(freeMessages[0][len(freeMessages[0])-1] != '\n'):
-            completeMessage += '\n'
-    #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
-    unformattedLinks = spoilSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
-    for singleLink in unformattedLinks:
-        if(singleLink[len(singleLink)-1] != "|"):
-            completeMessage += 'https://fxtwitter.com/' + singleLink + '\n'
-        else:
-            completeMessage += '||https://fxtwitter.com/' + singleLink + '\n'
-    if(completeMessage == ''):
-        completeMessage = None
-    return [completeMessage, freeMessages]
+    if(regexTwitterLinks(message.content) != []):
+        completeMessage = (f'{author} posted\n')
+        freeMessages, unformattedLinks = regexFreeMessages(message.content)
+        if(freeMessages != []):
+            if(freeMessages[0] != ''):
+                completeMessage += (f'{freeMessages[0]}')
+                if(freeMessages[0][len(freeMessages[0])-1] != '\n'):
+                    completeMessage += '\n'
+        #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
+        unformattedLinks = spoilSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
+        for singleLink in unformattedLinks:
+            if(singleLink[len(singleLink)-1] != "|"):
+                completeMessage += 'https://fxtwitter.com/' + singleLink + '\n'
+            else:
+                completeMessage += '||https://fxtwitter.com/' + singleLink + '\n'
+        if(completeMessage == ''):
+            completeMessage = None
+        return [completeMessage, freeMessages]
     
 def regexFreeMessages(stringToRegex):
     match = re.findall(f"([\s\S]*?)(?:http(?:s)?://)+(?:www.)?(?:x|twitter)\.com/(.\S*)([\s\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:x|twitter)\.com/.\S*|$)([\s\S]*?)", stringToRegex)
@@ -122,13 +124,31 @@ async def on_raw_message_edit(rawMessage):
     if(editedMessage.author == client.user):
         return
     #If the message was edited more than x second(s) ago then you can edit the bot message- reason being removing the embeds from the OG message (in the on_message event)
-    if(editedMessage.created_at > (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=2))): # 
+    if(editedMessage.created_at > (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=3))): # 
         return
-    if (regexTwitterLinks(editedMessage.content)) != []:
-            async for postMessages in editedMessage.channel.history(limit = 2, after = editedMessage):
-                if postMessages.author == client.user:
+    #This logic is flawed. Checks if message has twitter link, but what if I replace the twitter link with a .?
+    #if (regexTwitterLinks(editedMessage.content)) != []:
+    async for postMessage in editedMessage.channel.history(limit = 2, after = editedMessage):
+        if postMessage.author == client.user:
+            if(postMessage.reference != None):
+                if (postMessage.reference.message_id == editedMessage.id):
                     completeMessage = getFormattedMessage(editedMessage, editedMessage.author.display_name)
                     if(completeMessage != None):
-                        await postMessages.edit(content = completeMessage, allowed_mentions=discord.AllowedMentions.none())
-                        
+                        await postMessage.edit(content= completeMessage[0], allowed_mentions=discord.AllowedMentions.none())
+                    else:
+                        await postMessage.delete()
+                    async for botFollowUpMessage in postMessage.channel.history(limit=2, after = postMessage):
+                        if(botFollowUpMessage.author == client.user):
+                            if((completeMessage != None)):
+                                botFollowUpContent = makeMessage(completeMessage[1])
+                                if(botFollowUpContent != ''):
+                                    await botFollowUpMessage.edit(content = botFollowUpContent, allowed_mentions = discord.AllowedMentions.none())
+                                else:
+                                    await botFollowUpMessage.delete()                                    
+                            else:
+                                await botFollowUpMessage.delete()
+                    return
+                                
+                    
+                    
 client.run(open('TOKEN.bottoken','r').read())
