@@ -16,10 +16,12 @@ client = discord.Client(intents=intents)
 #Two domains this works on not modular to add a new domain but not too difficult
 TWITTER = 'twitter'
 XCOM = 'x'
+INSTAGRAM = 'instagram'
+REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}"
 def regexTwitterLinks(stringToRegex):
     #([\s\S]*?)(?P<LinkChecker>(?:http(?:s)?://)+(?:www.)?(?:x|twitter)\.com/(.\S*))([\s\S]*?)(?=(?:(?P=LinkChecker))|$) 
     #in theory this regex grabs all the floating text, and the after link message but I could not figure out how to get the groups to work in python
-    return re.findall(f"(?:http(?:s)?)?://(?:www.)?(?:{XCOM}|{TWITTER})\\.com/(.\\S*)", stringToRegex)
+    return re.findall(f"(?:http(?:s)?)?://(?:www.)?((?:{REGEXLINKS})\\.com/.\\S*)", stringToRegex)
 def getFormattedMessage(message, author):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     if(regexTwitterLinks(message.content) != []):
@@ -33,22 +35,39 @@ def getFormattedMessage(message, author):
         #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
         unformattedLinks = spoilSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
         for singleLink in unformattedLinks:
-            if(singleLink[len(singleLink)-1] != "|"):
-                completeMessage += 'https://fxtwitter.com/' + singleLink + '\n'
-            else:
-                completeMessage += '||https://fxtwitter.com/' + singleLink + '\n'
+            if((singleLink[:len(TWITTER)] == "twitter") & (singleLink[len(singleLink)-1] != "|")):
+                completeMessage += (f'https://fx{singleLink}\n')
+            elif((singleLink[:len(TWITTER)] == "twitter") & (singleLink[len(singleLink)-1] == "|")):
+                completeMessage += (f'||https://fx{singleLink}\n')
+            if((singleLink[:len(XCOM)] == "x") & (singleLink[len(singleLink)-1] != "|")):
+                completeMessage += (f'https://fixup{singleLink}\n')
+            elif((singleLink[:len(XCOM)] == "x") & (singleLink[len(singleLink)-1] == "|")):
+                completeMessage += (f'||https://fx{singleLink }\n')
+            if((singleLink[:len(INSTAGRAM)] == "instagram") & (singleLink[len(singleLink)-1] != "|")):
+                completeMessage += (f'https://dd{singleLink}\n')
+            elif((singleLink[:len(TWITTER)] == "instagram") & (singleLink[len(singleLink)-1] == "|")):
+                completeMessage += (f'||https://dd{singleLink}\n')
+                
         if(completeMessage == ''):
             completeMessage = None
         return [completeMessage, freeMessages]
     
 def regexFreeMessages(stringToRegex):
-    match = re.findall(f"([\s\S]*?)(?:http(?:s)?://)+(?:www.)?(?:x|twitter)\.com/(.\S*)([\s\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:x|twitter)\.com/.\S*|$)([\s\S]*?)", stringToRegex)
+    match = re.findall(f"([\\s\\S]*?)(?:http(?:s)?://)+(?:www.)?((?:{REGEXLINKS})\\.com/.\\S*)([\\s\\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:{REGEXLINKS})\\.com/.\\S*|$)([\\s\\S]*?)", stringToRegex)
     freeMessages = []
     twitterLinks = []
     for matchList in match:
         freeMessages.append(matchList[0])
         twitterLinks.append(matchList[1])
         freeMessages.append(matchList[2])
+    countOfSpoilers = re.findall("\\|\\|", freeMessages[0])
+    if(len(countOfSpoilers)%2 != 0):
+        freeMessages[0] = (f"{freeMessages[0]}||")
+    for message in freeMessages[1:len(freeMessages)-1]:
+        if(message[len(message)- 1] == '|'):
+            messageIndex = freeMessages.index(message)
+            freeMessages.remove(message)
+            freeMessages.insert(messageIndex, f'||{message}')    
     return freeMessages, twitterLinks
 
     #awful bandaid fix
@@ -73,7 +92,11 @@ def spoilSpoiledMessages(unformattedLinks, spoiled):
         if link in unformattedLinks:   
             spoiledLinkIndex = unformattedLinks.index(link)
             unformattedLinks.remove(link)
-            unformattedLinks.insert(spoiledLinkIndex, (link+"||"))
+            if(link[len(link)-1] != "|"):
+                unformattedLinks.insert(spoiledLinkIndex, (f'{link}||'))
+            else:
+                unformattedLinks.insert(spoiledLinkIndex, link)
+                
     return unformattedLinks
 
 def makeMessage(freeMessages):
@@ -97,7 +120,8 @@ async def on_message(message):
                 await asyncio.sleep(1) #Sleeps to help with the delay of when the picture embeds? :shrug:
                 await message.edit(suppress=True) #Removes the embeds from the original message b/c y'know it's ugly
                 await message.reply(tupleCompleteAndFreeMessages[0], allowed_mentions=discord.AllowedMentions.none(), silent = True) #Sends the message then, removes the mention so it doesn't @ the person
-                await message.channel.send(makeMessage(tupleCompleteAndFreeMessages[1]))
+                if ((followUpMessage := makeMessage(tupleCompleteAndFreeMessages[1])) != ''):
+                    await message.channel.send(followUpMessage)
             
 @client.event
 async def on_raw_message_delete(rawMessage):
