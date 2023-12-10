@@ -35,17 +35,17 @@ def getFormattedMessage(message, author):
         #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
         unformattedLinks = spoilSpoiledMessages(unformattedLinks, getSpoiledMessages(message))
         for singleLink in unformattedLinks:
-            if((singleLink[:len(TWITTER)] == "twitter") & (singleLink[len(singleLink)-1] != "|")):
+            if((singleLink[:len(TWITTER)] == "twitter") and (singleLink[len(singleLink)-1] != "|")):
                 completeMessage += (f'https://fx{singleLink}\n')
-            elif((singleLink[:len(TWITTER)] == "twitter") & (singleLink[len(singleLink)-1] == "|")):
+            elif((singleLink[:len(TWITTER)] == "twitter") and (singleLink[len(singleLink)-1] == "|")):
                 completeMessage += (f'||https://fx{singleLink}\n')
-            if((singleLink[:len(XCOM)] == "x") & (singleLink[len(singleLink)-1] != "|")):
+            if((singleLink[:len(XCOM)] == "x") and (singleLink[len(singleLink)-1] != "|")):
                 completeMessage += (f'https://fixup{singleLink}\n')
-            elif((singleLink[:len(XCOM)] == "x") & (singleLink[len(singleLink)-1] == "|")):
+            elif((singleLink[:len(XCOM)] == "x") and (singleLink[len(singleLink)-1] == "|")):
                 completeMessage += (f'||https://fx{singleLink }\n')
-            if((singleLink[:len(INSTAGRAM)] == "instagram") & (singleLink[len(singleLink)-1] != "|")):
+            if((singleLink[:len(INSTAGRAM)] == "instagram") and (singleLink[len(singleLink)-1] != "|")):
                 completeMessage += (f'https://dd{singleLink}\n')
-            elif((singleLink[:len(TWITTER)] == "instagram") & (singleLink[len(singleLink)-1] == "|")):
+            elif((singleLink[:len(TWITTER)] == "instagram") and (singleLink[len(singleLink)-1] == "|")):
                 completeMessage += (f'||https://dd{singleLink}\n')
                 
         if(completeMessage == ''):
@@ -63,11 +63,12 @@ def regexFreeMessages(stringToRegex):
     countOfSpoilers = re.findall("\\|\\|", freeMessages[0])
     if(len(countOfSpoilers)%2 != 0):
         freeMessages[0] = (f"{freeMessages[0]}||")
-    for message in freeMessages:
-        if((message[len(message)- 1] == '|') & (message != freeMessages[0])): #please make this better, I don't need to check the first index b/c it is special
-            messageIndex = freeMessages.index(message)
-            freeMessages.remove(message)
-            freeMessages.insert(messageIndex, f'||{message}')    
+    if (freeMessages != []):
+        for message in freeMessages:
+            if((message != '') and (message[len(message)- 1] == '|') and (message != freeMessages[0])): #please make this better, I don't need to check the first index b/c it is special
+                messageIndex = freeMessages.index(message)
+                freeMessages.remove(message)
+                freeMessages.insert(messageIndex, f'||{message}')    
     return freeMessages, twitterLinks
 
     #awful bandaid fix
