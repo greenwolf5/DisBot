@@ -17,7 +17,9 @@ client = discord.Client(intents=intents)
 TWITTER = 'twitter'
 XCOM = 'x'
 INSTAGRAM = 'instagram'
-REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}"
+TIKTOK = "tiktok"
+REDDIT = "reddit"
+REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}|{TIKTOK}|{REDDIT}"
 def regexTwitterLinks(stringToRegex):
     #([\s\S]*?)(?P<LinkChecker>(?:http(?:s)?://)+(?:www.)?(?:x|twitter)\.com/(.\S*))([\s\S]*?)(?=(?:(?P=LinkChecker))|$) 
     #in theory this regex grabs all the floating text, and the after link message but I could not figure out how to get the groups to work in python
@@ -45,8 +47,16 @@ def getFormattedMessage(message, author):
                 completeMessage += (f'||https://fx{singleLink }\n')
             if((singleLink[:len(INSTAGRAM)] == "instagram") and (singleLink[len(singleLink)-1] != "|")):
                 completeMessage += (f'https://dd{singleLink}\n')
-            elif((singleLink[:len(TWITTER)] == "instagram") and (singleLink[len(singleLink)-1] == "|")):
+            elif((singleLink[:len(INSTAGRAM)] == "instagram") and (singleLink[len(singleLink)-1] == "|")):
                 completeMessage += (f'||https://dd{singleLink}\n')
+            if((singleLink[:len(TIKTOK)] == "tiktok") and (singleLink[len(singleLink)-1] != "|")):
+                completeMessage += (f'https://vx{singleLink}\n')
+            elif((singleLink[:len(TIKTOK)] == "tiktok") and (singleLink[len(singleLink)-1] == "|")):
+                completeMessage += (f'||https://vx{singleLink}\n')
+            if((singleLink[:len(REDDIT)] == "reddit") and (singleLink[len(singleLink)-1] != "|")):
+                completeMessage += (f'https://rx{singleLink[2:]}\n')
+            elif((singleLink[:len(REDDIT)] == "reddit") and (singleLink[len(singleLink)-1] == "|")):
+                completeMessage += (f'||https://rx{singleLink[2:]}\n')
                 
         if(completeMessage == ''):
             completeMessage = None
