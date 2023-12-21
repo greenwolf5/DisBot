@@ -72,7 +72,10 @@ def regexFreeMessages(stringToRegex):
         freeMessages.append(matchList[2])
     countOfSpoilers = re.findall("\\|\\|", freeMessages[0])
     if(len(countOfSpoilers)%2 != 0):
-        freeMessages[0] = (f"{freeMessages[0]}||")
+        if(len(freeMessages[0]) > 2):
+            freeMessages[0] = (f"{freeMessages[0]}||")
+        else:
+            freeMessages[0] = ''
     if (freeMessages != []):
         for message in freeMessages:
             if((message != '') and (message[len(message)- 1] == '|') and (message != freeMessages[0])): #please make this better, I don't need to check the first index b/c it is special
