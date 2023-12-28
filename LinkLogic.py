@@ -33,7 +33,7 @@ linkDictionary[REDDIT] = REDDIT_LINK
 def regexTwitterLinks(stringToRegex):
     #([\s\S]*?)(?P<LinkChecker>(?:http(?:s)?://)+(?:www.)?(?:x|twitter)\.com/(.\S*))([\s\S]*?)(?=(?:(?P=LinkChecker))|$) 
     #in theory this regex grabs all the floating text, and the after link message but I could not figure out how to get the groups to work in python
-    return re.findall(f"(?:http(?:s)?)?://(?:www.)?((?:{REGEXLINKS}).\\S*)", stringToRegex)
+    return re.findall(fr"(?:http(?:s)?)?://(?:www\.)?((?:{REGEXLINKS})[^\r\n\t\f\v| ]*)", stringToRegex)
 
 #One of the most complicated methods as it returns two variables
 #Complete Message, which is the message of who posted it, the first line said by the user, then all of the links
@@ -47,8 +47,8 @@ def getFormattedMessage(message, author):
         if(firstMessage != None):
             completeMessage += firstMessage
         #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
-        unformattedLinks = spoilSpoiledLinks(unformattedLinks, getSpoiledMessages(message))
-        completeMessage += returnFormattedLink(unformattedLinks)
+        unformattedLinks = spoilSpoiledLinks(unformattedLinks, getSpoiledMessages(message.content))
+        completeMessage += returnFormattedLinks(unformattedLinks)
         if(completeMessage == ''):
             completeMessage = None
         return [completeMessage, nonEmptyFreeMessages]
@@ -65,7 +65,7 @@ def getFirstMessage(freeMessages):
                 return tempString
 
 #This checks the links against the dictonary in order to get their proper new link
-def returnFormattedLink(unformattedLinks):
+def returnFormattedLinks(unformattedLinks):
     completeMessage = ""
     for singleLink in unformattedLinks:
             isSpoiled = False
@@ -85,22 +85,19 @@ def returnFormattedLink(unformattedLinks):
 #Twitter links which is all of the links said by the user.
 def regexFreeMessages(stringToRegex):
     #This regex is complicated; as it captures all lines before the link, and after the link, with no overlapping
-    #match = re.findall(f"([\\s\\S]*?)(?:http(?:s)?://)+(?:www.)?((?:{REGEXLINKS}).\\S*)([\\s\\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:{REGEXLINKS}).\\S*|$)([\\s\\S]*?)", stringToRegex)
-    match = re.findall(r"([\s\S]*?)(?:http(?:s)?://)+(?:www.)?((?:twitter|x|reddit|instagram|tiktok|vm\.tiktok).\S*)([\s\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:twitter|x|reddit|instagram|tiktok|vm\.tiktok).\S*|$)([\s\S]*?)", stringToRegex)
     regex = fr"([\s\S]*?)(?:http(?:s)?://)+(?:www.)?((?:{REGEXLINKS}).\S*)([\s\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:{REGEXLINKS}).\S*|$)([\s\S]*?)"
     matches = re.finditer(regex, stringToRegex, re.MULTILINE)
     freeMessages = []
     twitterLinks = []
-    lastMessages = []
+    #lastMessages = []
     #There are 3 matches, all messages before the link, the link, then all messages after the link.
     for matchList in matches:
-    #for matchNum, match in enumerate(matches, start=1):
         freeMessages.append(matchList[1])
         twitterLinks.append(matchList[2])
         freeMessages.append(matchList[3])
-        endMessage = matchList[3]
-        if(endMessage != '' and endMessage != "\n" and endMessage != ' ' and endMessage != "||\n||" and endMessage != "\n||" and endMessage != "||\n"):
-            lastMessages.append(matchList[3])
+        #endMessage = matchList[3]
+        #if(endMessage != '' and endMessage != "\n" and endMessage != ' ' and endMessage != "||\n||" and endMessage != "\n||" and endMessage != "||\n"):
+        #    lastMessages.append(matchList[3])
     #Since you could spoil a link and a message in the same spoiler i.e ||x.com/213 this message is spoiled||
     #This checks if there's an uneven amount of spoiling as the spoiler text will get cut off as it'll be attatched to the link.
     countOfSpoilers = re.findall("\\|\\|", freeMessages[0])
@@ -112,66 +109,64 @@ def regexFreeMessages(stringToRegex):
             freeMessages[0] = (f"{freeMessages[0]}||")
         else:
             freeMessages[0] = ''
-    if (freeMessages != []):
-        #for message in freeMessages:
-        #    if((message != '') and (message[len(message)- 1] == '|') and (message != freeMessages[0])): #please make this better, I don't need to check the first index b/c it is special
-        #        messageIndex = freeMessages.index(message)
-        #        freeMessages.remove(message)
-        #        freeMessages.insert(messageIndex, f'||{message}')    
+    if (freeMessages != []):  
         nonEmptyFreeMessages = []
         for message in freeMessages:
-            tempMessage = message
             #This line removes any new line characters that are caught if you do "x.com/123\nx.com/321" freemessage[1] will be \n which is useless to send
             if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n"): #please make this better, I don't need to check the first index b/c it is special
-                #At this point there are 4 cases: "not spoiled", "||start spoiled", "ends spoiled||", "||fully spoiled||"
-                #Case #1 and case #4 can be ignored, but case #2 and #3 need to be checked for 
-                
-                #check if message ends in ||
-                #if it starts with|| nothing
-                #if it is in list of lastMessages nothing
-                # !in list, then remove the last ||
-                if(message[len(message)-2] == "|" and message[0] != "|" and not(message in lastMessages)): 
-                    message = message[:len(message)-2]
-                if((message[0] == '|')):
-                    if(message[2:3] == "\n"):
-                        message = message[0:1] + message[4:] 
-                    if((message[len(message)-2]) != '|'):
-                        if(message[len(message)-1:len(message)] == "\n"):
-                            message = message[:len(message)-1]
-                        messageIndex = freeMessages.index(tempMessage)
-                        #tempMessage = message
-                        #freeMessages.remove(message)
-                        #freeMessages.insert(messageIndex, f'{tempMessage}||')    
-                        nonEmptyFreeMessages.insert(messageIndex,f'{message}||')
-                    else:
-                        nonEmptyFreeMessages.insert(messageIndex,f'{message}')
-                elif((message[len(message)-2]) == '|'):
-                        if(message[0:1] == "\n"):
-                            message = message[1:] 
-                        if(message[len(message)-3:len(message)-2] == "\n"):
-                            message = message[:len(message)-3] + message[len(message)-2:]
-                        messageIndex = freeMessages.index(tempMessage)
-                        #tempMessage = message
-                        #freeMessages.remove(message)
-                        #freeMessages.insert(messageIndex, f'||{tempMessage}')   
-                        nonEmptyFreeMessages.insert(messageIndex,f'||{message}')
-                else:
-                        if(message[0:1] == "\n"):
-                            message = message[1:] 
-                        if(message[len(message)-1:] == "\n"):
-                            message = message[:len(message)-1]
-                        messageIndex = freeMessages.index(tempMessage)
-                        nonEmptyFreeMessages.insert(messageIndex,f'{message}')
+                regexSplit = re.split("\W+", message)                
+                noBadSpaces = " ".join(regexSplit)
+                if(noBadSpaces[0] == ' '):
+                    noBadSpaces = noBadSpaces[1:]
+                if(noBadSpaces[len(noBadSpaces)-1] == ' '):
+                    noBadSpaces = noBadSpaces[:len(noBadSpaces)-1]
+                nonEmptyFreeMessages.append(noBadSpaces)
+        listFreeMessages = getSpoiledFreeMessages(stringToRegex)
+        nonEmptyFreeMessages = fixSpoiledMessages(listFreeMessages, nonEmptyFreeMessages)
     return nonEmptyFreeMessages, twitterLinks
 
 #Simple method that grabs every single message that is between spoiler. will grab 'freemessage' and 'singlelink' together in one message
-def getSpoiledMessages(message):
-    spoiled = re.findall('\\|\\|.*?\\|\\|', message.content) #Grabs *any* message in spoiler tags
+def getSpoiledMessages(content):
+    spoiled = returnSpoiledList(content)
     completeSpoiledMessages = ''
     for spoiledMessage in spoiled:
         completeSpoiledMessages += spoiledMessage
     #makes the spoiler tag message into one string, I couldn't find their toString probably does exist
     return completeSpoiledMessages
+
+def returnSpoiledList(content):
+     spoiled = re.findall('\\|\\|.*?\\|\\|', content) #Grabs *any* message in spoiler tags
+     return spoiled
+
+def getSpoiledFreeMessages(content):
+    spoiledMessages = returnSpoiledList(content)
+    freeMessageList = []
+    for message in spoiledMessages:
+        if(message[0] == "|" and message[len(message) -1 ] != "|"):
+            message = message[2:]
+        elif(message[0] != "|" and message[len(message) -1 ] == "|"):
+            message = message[:len(message) -2]
+        elif(message[0] == "|" and message[len(message) -1 ] == "|"):
+            message = message[2:len(message) -2]
+        if(message.__contains__("http")):
+            separateByWords = message.split()
+            if(len(separateByWords) > 1):
+                for word in separateByWords:    
+                    if(word.__contains__("http")):
+                        separateByWords.remove(word)
+                message = " ".join(separateByWords)          
+                freeMessageList.append(message)
+        else:
+            freeMessageList.append(message) 
+    return freeMessageList
+    
+def fixSpoiledMessages(listFreeMessages, nonEmptyFreeMessages):
+    for sentence in listFreeMessages:
+        if(sentence in nonEmptyFreeMessages):
+            index = nonEmptyFreeMessages.index(sentence)
+            nonEmptyFreeMessages.remove(sentence)
+            nonEmptyFreeMessages.insert(index, f"||{sentence}||")
+    return nonEmptyFreeMessages
 
 [DeprecationWarning]
 #This will remove links from the message to be sent if they have been spoiled
@@ -208,3 +203,4 @@ def formatFreeMessages(freeMessages):
             else:
                 completeFreeMessage += f"{message}\n"
     return completeFreeMessage
+ 
