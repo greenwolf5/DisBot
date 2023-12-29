@@ -2,8 +2,8 @@ greenId = 150793267703840769
 reshId = 378704627132006400
 slyId = 158396544838664192
 ponId = 243925562085736449
-direId = 1064069125531500574
-listKnownUsers = [greenId, reshId, slyId, ponId, direId]
+kodahn = 1064069125531500574
+listKnownUsers = [greenId, reshId, slyId, ponId, kodahn]
 
 keyWordDictionary = {}
 responseDictonary = {}
@@ -20,8 +20,8 @@ responseDictonary[slyId] = ["OH GOD NOT A SLY TLDR!"]
 keyWordDictionary[ponId] = ["ope", "chipi chipi"]
 responseDictonary[ponId] = ["ope", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
 
-keyWordDictionary[direId] = ["oh shit", "chipi chipi"]
-responseDictonary[direId] = ["shit oh?", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
+keyWordDictionary[kodahn] = ["oh shit", "chipi chipi"]
+responseDictonary[kodahn] = ["shit oh?", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
 
 def checkKnownUser(id):
     if(id in listKnownUsers):
