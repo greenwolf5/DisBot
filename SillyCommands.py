@@ -2,17 +2,18 @@ greenId = 150793267703840769
 reshId = 378704627132006400
 slyId = 158396544838664192
 ponId = 243925562085736449
-kodahn = 1064069125531500574
-listKnownUsers = [greenId, reshId, slyId, ponId, kodahn]
+kodahnId = 1064069125531500574
+katId = 203388044538019841
+listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId]
 
 keyWordDictionary = {}
 responseDictonary = {}
 
-keyWordDictionary[greenId] = ["bitch bot", "いただきます"]
-responseDictonary[greenId] = ["You fuckin' called?\n", "How many do you simp for?!\n"]
+keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvGasms:1040264733737095299>']
+responseDictonary[greenId] = ["You fuckin' called?\n", "How many do you simp for?!\n", [True, '<:WTF:637454072164646922>']]
 
-keyWordDictionary[reshId] = ["hell yeah brother", "fr fr", "no cap", '<:SmugCat:784283846447202314>']
-responseDictonary[reshId] = ["hell yeah indeed brother\n", "fr fr", "no cap", '<:SmugCat:784283846447202314>']
+keyWordDictionary[reshId] = ["hell yeah brother", "frfr", "on god", "no cap", "straight facts", "bruh", '<:SmugCat:784283846447202314>']
+responseDictonary[reshId] = ["hell yeah indeed brother\n", "frfr", "on god", "no cap", "straight facts", "bruh", [True, '<:SmugCat:784283846447202314>']]
 
 keyWordDictionary[slyId] = ["tldr"]
 responseDictonary[slyId] = ["OH GOD NOT A SLY TLDR!"]
@@ -20,8 +21,11 @@ responseDictonary[slyId] = ["OH GOD NOT A SLY TLDR!"]
 keyWordDictionary[ponId] = ["ope", "chipi chipi"]
 responseDictonary[ponId] = ["ope", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
 
-keyWordDictionary[kodahn] = ["oh shit", "chipi chipi"]
-responseDictonary[kodahn] = ["shit oh?", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
+keyWordDictionary[kodahnId] = ["oh shit", "chipi chipi", '🫠', "nini"]
+responseDictonary[kodahnId] = ["shit oh?", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564", [True, '🫠'], "https://tenor.com/view/have-a-nice-day-good-sunday-gif-1674652217239459225"]
+
+keyWordDictionary[katId] = ["chipi chipi"]
+responseDictonary[katId] = ["https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
 
 def checkKnownUser(id):
     if(id in listKnownUsers):
@@ -32,11 +36,16 @@ def checkKnownUser(id):
 def containsKeyword(message, id):
     listOfKeywords = keyWordDictionary[id]
     responseMessage = ""
+    isReaction = False
     message = str.lower(message)
     for i in range(0,len(listOfKeywords)):
         if(message.__contains__(str.lower(listOfKeywords[i]))):
-            responseMessage += f"{responseDictonary[id][i]} "
-    return responseMessage
+            if(responseDictonary[id][i][0] != True):
+                responseMessage += f"{responseDictonary[id][i]} "
+            else:
+                isReaction = True
+                responseMessage = f"{responseDictonary[id][i][1]}" 
+    return responseMessage, isReaction
 
 #How go about saving keyWords and responses?
 #I want something like 
