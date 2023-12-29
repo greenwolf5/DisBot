@@ -42,7 +42,7 @@ def getFormattedMessage(message, author):
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     if(regexTwitterLinks(message.content) != []):
         completeMessage = (f'{author} posted\n')
-        nonEmptyFreeMessages, unformattedLinks = regexFreeMessages(message.content)
+        nonEmptyFreeMessages, unformattedLinks = regexLinesIntoList(message.content)
         firstMessage = getFirstMessage(nonEmptyFreeMessages)
         if(firstMessage != None):
             completeMessage += firstMessage
@@ -83,6 +83,7 @@ def returnFormattedLinks(unformattedLinks):
 #The other most complicated method, as it returns two variables
 #FreeMessages, which is all the lines said by the user
 #Twitter links which is all of the links said by the user.
+[DeprecationWarning]
 def regexFreeMessages(stringToRegex):
     #This regex is complicated; as it captures all lines before the link, and after the link, with no overlapping
     regex = fr"([\s\S]*?)(?:http(?:s)?://)+(?:www.)?((?:{REGEXLINKS}).\S*)([\s\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:{REGEXLINKS}).\S*|$)([\s\S]*?)"
@@ -124,6 +125,46 @@ def regexFreeMessages(stringToRegex):
         listFreeMessages = getSpoiledFreeMessages(stringToRegex)
         nonEmptyFreeMessages = fixSpoiledMessages(listFreeMessages, nonEmptyFreeMessages)
     return nonEmptyFreeMessages, twitterLinks
+
+def regexLinesIntoList(stringToRegex):
+        twitterLinks = []
+        freeMessages = []
+        testList = stringToRegex.split("\n")
+        firstTime = True
+        for line in testList:
+            if(line.__contains__("http")):
+                regex = fr"([\s\S]*?)(?:http(?:s)?://)+(?:www.)?((?:{REGEXLINKS}).\S*)([\s\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:{REGEXLINKS}).\S*|$)([\s\S]*?)"
+                matches = re.finditer(regex, line, re.MULTILINE)
+                for matchList in matches:
+                    if(matchList[1] != '' and matchList[1] != '||'):
+                        freeMessages.append(matchList[1])
+                    elif(firstTime):
+                        freeMessages.append('')
+                    twitterLinks.append(matchList[2])
+                    if(matchList[3] != '' and matchList[3] != '||'):
+                        freeMessages.append(matchList[3])
+            else:
+                #message = re.findall(r'.*', line)
+                freeMessages.append(line)
+            firstTime = False
+                
+            nonEmptyFreeMessages = []
+            for message in freeMessages:    
+                if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n"): #please make this better, I don't need to check the first index b/c it is special
+                    regexSplit = re.split("\W+", message)                
+                    noBadSpaces = " ".join(regexSplit)
+                    if(noBadSpaces[0] == ' '):
+                        noBadSpaces = noBadSpaces[1:]
+                    if(noBadSpaces[len(noBadSpaces)-1] == ' '):
+                        noBadSpaces = noBadSpaces[:len(noBadSpaces)-1]
+                    nonEmptyFreeMessages.append(noBadSpaces)
+                if(message == ''):
+                    #in theory, this will only ever happen on the first time, as empty messages are already filtered out
+                    #the first index being empty means there is no message that comes before the first link- keeping the order
+                    nonEmptyFreeMessages.append(message)
+            listFreeMessages = getSpoiledFreeMessages(stringToRegex)
+            nonEmptyFreeMessages = fixSpoiledMessages(listFreeMessages, nonEmptyFreeMessages)
+        return nonEmptyFreeMessages, twitterLinks
 
 #Simple method that grabs every single message that is between spoiler. will grab 'freemessage' and 'singlelink' together in one message
 def getSpoiledMessages(content):

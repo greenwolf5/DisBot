@@ -1,5 +1,6 @@
 # This example requires the 'message_content' intent.
 from LinkLogic import *
+from SillyCommands import *
 import discord
 import datetime
 import asyncio
@@ -34,6 +35,9 @@ async def on_message(message):
                     await message.channel.send(followUpMessage)
                 #if ((tupleCompleteAndFreeMessages[1]) != None):
                 #    await message.channel.send("\n".join(tupleCompleteAndFreeMessages[1]))
+        if(checkKnownUser(message.author.id) == True):
+            if((responseMessage := containsKeyword(message.content, message.author.id)) != ''):
+                await message.reply(responseMessage, allowed_mentions=discord.AllowedMentions.none(), silent = True)
             
 @client.event
 async def on_raw_message_delete(rawMessage):

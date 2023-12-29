@@ -18,20 +18,17 @@ YEAHHHH
 ||https://www.tiktok.com/t/ZT8aMJt6N/||
 ||GOD I HATE THIS SO MUCH||
 ||https://vm.tiktok.com/ZIJnBp5q1/ or a random ass awful situation like https://x.com/123||
-||https://www.reddit.com/r/HonkaiStarRail_leaks/s/hvFDwNGAV0||"""
-    testList = stringToRegex.split("\n")
-    for line in testList:
-        if(line.__contains__("http")):
-            regex = fr"([\s\S]*?)(?:http(?:s)?://)+(?:www.)?((?:{REGEXLINKS}).\S*)(?:\s)*?(.*)"
-            matches = re.finditer(regex, line, re.MULTILINE)
-            for matchList in matches:
-                print(matchList)
-        else:
-            message = re.findall(r'.*', line)
+||https://www.reddit.com/r/HonkaiStarRail_leaks/s/hvFDwNGAV0|| ahhh shit, here we go again
+but like 
+
+
+literally
+"""
             
         
     regexLinks = regexTwitterLinks(stringToRegex)
-    freeMessages, unformattedLinks = regexFreeMessages(stringToRegex)
+    #freeMessages, unformattedLinks = regexFreeMessages(stringToRegex)
+    freeMessages, unformattedLinks = regexLinesIntoList(stringToRegex)
     firstMessage = getFirstMessage(freeMessages)
     spoiledMessages = getSpoiledMessages(stringToRegex)
     spoiledSpoiledLinks = spoilSpoiledLinks(unformattedLinks, spoiledMessages)
@@ -72,10 +69,13 @@ YEAHHHH
             'response than',
             'this baby',
             'YEAHHHH',
-            '||this is a message but at the end||', #is spoiled, should be at this step
-            '||this is a message but at the beginning||', #is spoiled, should be at this point
-            '||GOD I HATE THIS SO MUCH||', #is spoiled, should be but no extra
-            '||or a random ass awful situation like||' #is spoiled, should be - but this case is difficult
+            '||this is a message but at the end||', 
+            '||this is a message but at the beginning||', 
+            '||GOD I HATE THIS SO MUCH||', 
+            '||or a random ass awful situation like||',
+            'ahhh shit here we go again',
+            'but like',
+            'literally'
             ]
         self.assertSequenceEqual(self.freeMessages, correctAnswer)
     
@@ -132,6 +132,9 @@ YEAHHHH
 ||this is a message but at the beginning||
 ||GOD I HATE THIS SO MUCH||
 ||or a random ass awful situation like||
+ahhh shit here we go again
+but like
+literally
 """
         self.assertSequenceEqual(self.formattedFreeMessages, correctAnswer)
         
