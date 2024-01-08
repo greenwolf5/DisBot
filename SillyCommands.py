@@ -10,7 +10,7 @@ keyWordDictionary = {}
 responseDictonary = {}
 
 keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvGasms:1040264733737095299>']
-responseDictonary[greenId] = ["You fuckin' called?\n", "How many do you simp for?!\n", [True, '<:WTF:637454072164646922>']]
+responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>']]
 
 keyWordDictionary[reshId] = ["hell yeah brother", "frfr", "on god", "no cap", "straight facts", "bruh", '<:SmugCat:784283846447202314>']
 responseDictonary[reshId] = ["hell yeah indeed brother\n", "frfr", "on god", "no cap", "straight facts", "bruh", [True, '<:SmugCat:784283846447202314>']]
@@ -19,7 +19,7 @@ keyWordDictionary[slyId] = ["tldr"]
 responseDictonary[slyId] = ["OH GOD NOT A SLY TLDR!"]
 
 keyWordDictionary[ponId] = ["ope", "chipi chipi"]
-responseDictonary[ponId] = ["ope", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
+responseDictonary[ponId] = ["HE SAID OPE!", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
 
 keyWordDictionary[kodahnId] = ["oh shit", "chipi chipi", '🫠', "nini"]
 responseDictonary[kodahnId] = ["shit oh?", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564", [True, '🫠'], "https://tenor.com/view/have-a-nice-day-good-sunday-gif-1674652217239459225"]
