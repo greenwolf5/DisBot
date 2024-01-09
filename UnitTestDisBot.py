@@ -60,7 +60,7 @@ literally c: i like [] extranious"""
         
         self.assertSequenceEqual(self.regexLinks, correctAnswer)
     
-    def test_regexFreeMessages(self):
+    def test_regexLinesIntoStrings(self):
         correctAnswer = [
             'I have never seen a more better',
             'response than',

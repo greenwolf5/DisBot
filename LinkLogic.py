@@ -115,7 +115,7 @@ def regexFreeMessages(stringToRegex):
         for message in freeMessages:
             #This line removes any new line characters that are caught if you do "x.com/123\nx.com/321" freemessage[1] will be \n which is useless to send
             if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n"): #please make this better, I don't need to check the first index b/c it is special
-                regexSplit = re.split("\W+", message)                
+                regexSplit = re.split(r"\W+", message)                
                 noBadSpaces = " ".join(regexSplit)
                 if(noBadSpaces[0] == ' '):
                     noBadSpaces = noBadSpaces[1:]
@@ -151,15 +151,11 @@ def regexLinesIntoList(stringToRegex):
         nonEmptyFreeMessages = []
         for message in freeMessages:    
             if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n"): #please make this better, I don't need to check the first index b/c it is special
-                regexSplit = re.split(" +|\|", message)                
-                #regexSplit = re.split("(?<!|)[]*", message)
+                regexSplit = re.split(r" |\|", message)                
                 noBadSpaces = ""
                 for word in regexSplit:
                     if word != "":
-                        noBadSpaces += word + " "               
-                #noBadSpaces = " ".join(regexSplit)
-                #if(noBadSpaces[0] == ' '):
-                #    noBadSpaces = noBadSpaces[1:]
+                        noBadSpaces += word + " "
                 if(noBadSpaces[len(noBadSpaces)-1] == ' '):
                     noBadSpaces = noBadSpaces[:len(noBadSpaces)-1]
                 nonEmptyFreeMessages.append(noBadSpaces)
