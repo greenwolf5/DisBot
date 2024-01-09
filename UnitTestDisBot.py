@@ -20,10 +20,7 @@ YEAHHHH
 ||https://vm.tiktok.com/ZIJnBp5q1/ or a random ass awful situation like https://x.com/123||
 ||https://www.reddit.com/r/HonkaiStarRail_leaks/s/hvFDwNGAV0|| ahhh shit, here we go again
 but like 
-
-
-literally
-"""
+literally c: i like [] extranious"""
             
         
     regexLinks = regexTwitterLinks(stringToRegex)
@@ -73,9 +70,9 @@ literally
             '||this is a message but at the beginning||', 
             '||GOD I HATE THIS SO MUCH||', 
             '||or a random ass awful situation like||',
-            'ahhh shit here we go again',
+            'ahhh shit, here we go again',
             'but like',
-            'literally'
+            'literally c: i like [] extranious'
             ]
         self.assertSequenceEqual(self.freeMessages, correctAnswer)
     
@@ -132,9 +129,9 @@ YEAHHHH
 ||this is a message but at the beginning||
 ||GOD I HATE THIS SO MUCH||
 ||or a random ass awful situation like||
-ahhh shit here we go again
+ahhh shit, here we go again
 but like
-literally
+literally c: i like [] extranious
 """
         self.assertSequenceEqual(self.formattedFreeMessages, correctAnswer)
         

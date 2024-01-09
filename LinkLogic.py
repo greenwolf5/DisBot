@@ -148,22 +148,27 @@ def regexLinesIntoList(stringToRegex):
                 freeMessages.append(line)
             firstTime = False
                 
-            nonEmptyFreeMessages = []
-            for message in freeMessages:    
-                if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n"): #please make this better, I don't need to check the first index b/c it is special
-                    regexSplit = re.split("\W+", message)                
-                    noBadSpaces = " ".join(regexSplit)
-                    if(noBadSpaces[0] == ' '):
-                        noBadSpaces = noBadSpaces[1:]
-                    if(noBadSpaces[len(noBadSpaces)-1] == ' '):
-                        noBadSpaces = noBadSpaces[:len(noBadSpaces)-1]
-                    nonEmptyFreeMessages.append(noBadSpaces)
-                if(message == ''):
-                    #in theory, this will only ever happen on the first time, as empty messages are already filtered out
-                    #the first index being empty means there is no message that comes before the first link- keeping the order
-                    nonEmptyFreeMessages.append(message)
-            listFreeMessages = getSpoiledFreeMessages(stringToRegex)
-            nonEmptyFreeMessages = fixSpoiledMessages(listFreeMessages, nonEmptyFreeMessages)
+        nonEmptyFreeMessages = []
+        for message in freeMessages:    
+            if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n"): #please make this better, I don't need to check the first index b/c it is special
+                regexSplit = re.split(" +|\|", message)                
+                #regexSplit = re.split("(?<!|)[]*", message)
+                noBadSpaces = ""
+                for word in regexSplit:
+                    if word != "":
+                        noBadSpaces += word + " "               
+                #noBadSpaces = " ".join(regexSplit)
+                #if(noBadSpaces[0] == ' '):
+                #    noBadSpaces = noBadSpaces[1:]
+                if(noBadSpaces[len(noBadSpaces)-1] == ' '):
+                    noBadSpaces = noBadSpaces[:len(noBadSpaces)-1]
+                nonEmptyFreeMessages.append(noBadSpaces)
+            if(message == ''):
+                #in theory, this will only ever happen on the first time, as empty messages are already filtered out
+                #the first index being empty means there is no message that comes before the first link- keeping the order
+                nonEmptyFreeMessages.append(message)
+        listFreeMessages = getSpoiledFreeMessages(stringToRegex)
+        nonEmptyFreeMessages = fixSpoiledMessages(listFreeMessages, nonEmptyFreeMessages)
         return nonEmptyFreeMessages, twitterLinks
 
 #Simple method that grabs every single message that is between spoiler. will grab 'freemessage' and 'singlelink' together in one message
