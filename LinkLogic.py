@@ -2,20 +2,20 @@ import re
 #The links the bot supports, in theory can add any link here as long as someone has made a variant that embeds better
 TWITTER = 'twitter.com/'
 XCOM = 'x.com/'
-#INSTAGRAM = 'instagram.com/'
+INSTAGRAM = 'instagram.com/'
 TIKTOK = "tiktok.com/"
 TIKTOK_TWO = "vm.tiktok.com/"
 REDDIT = "reddit.com/"
 
 #Probably could make this a for loop later
 #All the links that the bot supports. must be done otherwise it won't be found in the regex
-REGEXLINKS = f"{XCOM}|{TWITTER}|{TIKTOK}|{TIKTOK_TWO}|{REDDIT}"#{INSTAGRAM}"
+REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}|{TIKTOK}|{TIKTOK_TWO}|{REDDIT}"
 #https://regex101.com/r/Xnde5g/1
 
 #These are the links that we are switching the links to.
 TWITTER_LINK = "fxtwitter.com/"
 XCOM_LINK = "fixupx.com/"
-#INSTAGRAM_LINK = "ddinstagram.com/"
+INSTAGRAM_LINK = "ddinstagram.com/"
 TIKTOK_LINK = "vxtiktok.com/"
 TIKTOK_TWO_LINK ="vxtiktok.com/t/"
 REDDIT_LINK = "rxddit.com/"
@@ -24,7 +24,7 @@ REDDIT_LINK = "rxddit.com/"
 linkDictionary = {}
 linkDictionary[TWITTER] = TWITTER_LINK
 linkDictionary[XCOM] = XCOM_LINK
-#linkDictionary[INSTAGRAM] = INSTAGRAM_LINK
+linkDictionary[INSTAGRAM] = INSTAGRAM_LINK
 linkDictionary[TIKTOK] = TIKTOK_LINK
 linkDictionary[TIKTOK_TWO] = TIKTOK_TWO_LINK
 linkDictionary[REDDIT] = REDDIT_LINK
