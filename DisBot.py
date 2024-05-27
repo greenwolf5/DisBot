@@ -9,12 +9,22 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
+tree = discord.app_commands.CommandTree(client)
 
 #Websites that help
 #https://regex101.com/r/BFJBpZ/1 regex help
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
 
-
+# Add the guild ids in which the slash command will appear.
+# If it should be in all, remove the argument, but note that
+# it will take some time (up to an hour) to register the
+# command if it's for all guilds.
+@tree.command(
+    name="embed",
+    description="embed a twitter, x, instagram, reddit media"
+)
+async def slash_command(interaction: discord.Interaction, link: str): 
+    await interaction.response.send_message(returnSingleLink(link))
 
 @client.event
 async def on_ready():

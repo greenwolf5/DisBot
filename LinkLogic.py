@@ -77,9 +77,15 @@ def returnFormattedLinks(unformattedLinks):
                     spoilPart = ""
                     if(isSpoiled):
                         spoilPart += "||"
-                    completeMessage += (f'{spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):]}\n')
+                    completeMessage += (f'[{originalWebsiteName}]({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):]})\n')
     return completeMessage
     
+#This is made for the /embed command
+def returnSingleLink(singleLink):
+    for originalWebsiteName in linkDictionary: 
+                #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
+                if(originalWebsiteName in singleLink):
+                    return (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName)+8:]})\n')
 #The other most complicated method, as it returns two variables
 #FreeMessages, which is all the lines said by the user
 #Twitter links which is all of the links said by the user.
