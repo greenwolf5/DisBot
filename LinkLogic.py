@@ -15,7 +15,7 @@ REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}|{TIKTOK}|{TIKTOK_TWO}|{REDDIT}"
 #These are the links that we are switching the links to.
 TWITTER_LINK = "fxtwitter.com/"
 XCOM_LINK = "fixupx.com/"
-INSTAGRAM_LINK = "instagramez.com/"
+INSTAGRAM_LINK = "www.instagramez.com/"
 TIKTOK_LINK = "vxtiktok.com/"
 TIKTOK_TWO_LINK ="vxtiktok.com/t/"
 REDDIT_LINK = "rxddit.com/"
