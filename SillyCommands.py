@@ -1,9 +1,13 @@
-greenId = 150793267703840769
-reshId = 378704627132006400
-slyId = 158396544838664192
-ponId = 243925562085736449
-kodahnId = 1064069125531500574
-katId = 203388044538019841
+
+import configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
+greenId = int(config['USERS']['GreenId'])
+reshId = int(config['USERS']['ReshId'])
+slyId = int(config['USERS']['SlyId'])
+ponId = int(config['USERS']['PonId'])
+kodahnId = int(config['USERS']['KodahnId'])
+katId = int(config['USERS']['KatId'])
 listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId]
 
 keyWordDictionary = {}

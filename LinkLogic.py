@@ -86,6 +86,14 @@ def returnSingleLink(singleLink):
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
                 if(originalWebsiteName in singleLink):
                     return (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName)+8:]})\n')
+                
+    
+#This is made for the /spoil command            
+def returnSpoiledSingleLink(singleLink):
+    for originalWebsiteName in linkDictionary: 
+                #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
+                if(originalWebsiteName in singleLink):
+                    return (f'||https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName)+8:]}||')
 #The other most complicated method, as it returns two variables
 #FreeMessages, which is all the lines said by the user
 #Twitter links which is all of the links said by the user.

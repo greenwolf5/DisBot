@@ -4,12 +4,24 @@ from SillyCommands import *
 import discord
 import datetime
 import asyncio
+import configparser
+import os.path
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
 tree = discord.app_commands.CommandTree(client)
+config = configparser.ConfigParser()
+if(not os.path.isfile("config.ini")):
+    config['DEFAULT'] = {'ServerID': '1'}
+    config['USERS'] = {'GreenId ' : 1, 'ReshId' : 1,
+'SlyId' : 1, 'PonId ' : 1, 'KodahnId' : 1, 'KatId' : 1}
+    with open('config.ini', 'w') as configfile:
+        config.write(configfile)
+
+config.read('config.ini')
+serverId = config['DEFAULT']['ServerID']
 
 #Websites that help
 #https://regex101.com/r/BFJBpZ/1 regex help
@@ -21,13 +33,23 @@ tree = discord.app_commands.CommandTree(client)
 # command if it's for all guilds.
 @tree.command(
     name="embed",
-    description="embed a twitter, x, instagram, reddit media"
+    description="embed a twitter, x, instagram, reddit media",
+    guild=discord.Object(id=serverId)
 )
 async def slash_command(interaction: discord.Interaction, link: str): 
     await interaction.response.send_message(returnSingleLink(link))
 
+@tree.command(
+    name="spoil",
+    description="embed a spoiled twitter, x, instagram, reddit media",
+    guild=discord.Object(id=serverId)
+)
+async def slash_command(interaction: discord.Interaction, link: str): 
+    await interaction.response.send_message(returnSpoiledSingleLink(link))
+
 @client.event
 async def on_ready():
+    await tree.sync(guild=discord.Object(id=serverId))
     print(f'We have logged in as {client.user}')
 
 @client.event
