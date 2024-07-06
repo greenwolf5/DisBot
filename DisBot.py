@@ -2,6 +2,7 @@
 from LinkLogic import *
 from SillyCommands import *
 import discord
+from discord import app_commands
 import datetime
 import asyncio
 import configparser
@@ -23,6 +24,7 @@ if(not os.path.isfile("config.ini")):
 config.read('config.ini')
 serverId = config['DEFAULT']['ServerID']
 
+id = discord.Object(serverId)
 #Websites that help
 #https://regex101.com/r/BFJBpZ/1 regex help
 #https://discordpy.readthedocs.io/en/latest/api.html discord.py doc
@@ -31,25 +33,22 @@ serverId = config['DEFAULT']['ServerID']
 # If it should be in all, remove the argument, but note that
 # it will take some time (up to an hour) to register the
 # command if it's for all guilds.
-@tree.command(
-    name="embed",
-    description="embed a twitter, x, instagram, reddit media",
-    guild=discord.Object(id=serverId)
-)
-async def slash_command(interaction: discord.Interaction, link: str): 
+@tree.command(description="embed a spoiled twitter, x, instagram, reddit media")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True) 
+async def embed(interaction: discord.Interaction, link: str): 
     await interaction.response.send_message(returnSingleLink(link))
 
-@tree.command(
-    name="spoil",
-    description="embed a spoiled twitter, x, instagram, reddit media",
-    guild=discord.Object(id=serverId)
-)
-async def slash_command(interaction: discord.Interaction, link: str): 
+@tree.command(description="embed a spoiled twitter, x, instagram, reddit media")
+@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True) 
+@app_commands.guild_only()
+async def spoil(interaction: discord.Interaction, link: str): 
     await interaction.response.send_message(returnSpoiledSingleLink(link))
-
+    
 @client.event
 async def on_ready():
-    await tree.sync(guild=discord.Object(id=serverId))
+    await tree.sync(guild=id)
     print(f'We have logged in as {client.user}')
 
 @client.event
