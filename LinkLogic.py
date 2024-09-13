@@ -6,10 +6,11 @@ INSTAGRAM = 'instagram.com/'
 TIKTOK = "tiktok.com/"
 TIKTOK_TWO = "vm.tiktok.com/"
 REDDIT = "reddit.com/"
+PIXIV = "pixiv.net/"
 
 #Probably could make this a for loop later
 #All the links that the bot supports. must be done otherwise it won't be found in the regex
-REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}|{TIKTOK}|{TIKTOK_TWO}|{REDDIT}"
+REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}|{TIKTOK}|{TIKTOK_TWO}|{REDDIT}|{PIXIV}"
 #https://regex101.com/r/Xnde5g/1
 
 #These are the links that we are switching the links to.
@@ -19,6 +20,7 @@ INSTAGRAM_LINK = "www.instagramez.com/"
 TIKTOK_LINK = "vxtiktok.com/"
 TIKTOK_TWO_LINK ="vxtiktok.com/t/"
 REDDIT_LINK = "rxddit.com/"
+PIXIV_LINK = "phixiv.net/"
 
 #This dictonary pairs the og link and the new link together for easy searching.
 linkDictionary = {}
@@ -28,6 +30,7 @@ linkDictionary[INSTAGRAM] = INSTAGRAM_LINK
 linkDictionary[TIKTOK] = TIKTOK_LINK
 linkDictionary[TIKTOK_TWO] = TIKTOK_TWO_LINK
 linkDictionary[REDDIT] = REDDIT_LINK
+linkDictionary[PIXIV] = PIXIV_LINK
 
 #Simple method that returns all of the links found that are supported
 def regexTwitterLinks(stringToRegex):
