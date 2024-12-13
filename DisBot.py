@@ -37,7 +37,7 @@ id = discord.Object(serverId)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True) 
 async def embed(interaction: discord.Interaction, link: str): 
-    fullstring = "@silent " + interaction.user.display_name + " has posted\n"
+    fullstring = "@silent\n " + interaction.user.display_name + " has posted\n"
     fullstring += returnSingleLink(link)
     await interaction.response.send_message(fullstring)
 
@@ -46,7 +46,7 @@ async def embed(interaction: discord.Interaction, link: str):
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True) 
 @app_commands.guild_only()
 async def spoil(interaction: discord.Interaction, link: str): 
-    fullstring = "@silent " + interaction.user.display_name + " has posted\n"
+    fullstring = "@silent\n " + interaction.user.display_name + " has posted\n"
     fullstring += returnSpoiledSingleLink(link)
     await interaction.response.send_message(fullstring)
     
