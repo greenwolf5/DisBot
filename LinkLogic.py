@@ -70,17 +70,20 @@ def getFirstMessage(freeMessages):
 #This checks the links against the dictonary in order to get their proper new link
 def returnFormattedLinks(unformattedLinks):
     completeMessage = ""
+    shortedLink = ""
     for singleLink in unformattedLinks:
             isSpoiled = False
             if(singleLink[len(singleLink)-1] == "|"):
                 isSpoiled = True
             for originalWebsiteName in linkDictionary: 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
+                shortedLink = "[{originalWebsiteName}]"
                 if((singleLink[:len(originalWebsiteName)] == originalWebsiteName)):
                     spoilPart = ""
                     if(isSpoiled):
                         spoilPart += "||"
-                    completeMessage += (f'||[{originalWebsiteName}]||({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):]})\n')
+                        shortedLink = "||"+shortedLink+"||"
+                    completeMessage += (f'[{originalWebsiteName}]({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):]})\n')
     return completeMessage
     
 #This is made for the /embed command
