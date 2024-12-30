@@ -77,7 +77,7 @@ def returnFormattedLinks(unformattedLinks):
                 isSpoiled = True
             for originalWebsiteName in linkDictionary: 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
-                shortedLink = "[{originalWebsiteName}]"
+                shortedLink = f"[{originalWebsiteName}]"
                 if((singleLink[:len(originalWebsiteName)] == originalWebsiteName)):
                     spoilPart = ""
                     if(isSpoiled):
