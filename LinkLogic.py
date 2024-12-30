@@ -83,7 +83,7 @@ def returnFormattedLinks(unformattedLinks):
                     if(isSpoiled):
                         spoilPart += "||"
                         shortedLink = "||"+shortedLink+"||"
-                    completeMessage += (f'[{originalWebsiteName}]({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):]})\n')
+                    completeMessage += (f'{shortedLink}({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):]})\n')
     return completeMessage
     
 #This is made for the /embed command
