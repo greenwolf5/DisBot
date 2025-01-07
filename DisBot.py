@@ -33,26 +33,33 @@ id = discord.Object(serverId)
 # If it should be in all, remove the argument, but note that
 # it will take some time (up to an hour) to register the
 # command if it's for all guilds.
-@tree.command(description="embed a spoiled twitter, x, instagram, reddit media")
+@tree.command(description="embed twitter, x, instagram, reddit, tiktok, pixiv media")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True) 
-async def embed(interaction: discord.Interaction, link: str): 
+@app_commands.describe(link="Accepts links, can do multiple is seperated with spaces or commas. i.e 'x.com/123 x.com/321'")
+@app_commands.describe(message="Message bot will add onto the end so you don't need to type two messages. Optional")
+async def embed(interaction: discord.Interaction, link: str, message : str = None): 
     fullstring = interaction.user.display_name + " has posted\n"
     fullstring += returnSingleLink(link)
+    if(message != None):
+        fullstring += "\n" + message 
     await interaction.response.send_message(fullstring, silent = True)
 
-@tree.command(description="embed a spoiled twitter, x, instagram, reddit media")
+@tree.command(description="embed a spoiled twitter, x, instagram, reddit, tiktok, pixiv media")
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True) 
-@app_commands.guild_only()
-async def spoil(interaction: discord.Interaction, link: str): 
+@app_commands.describe(link="Accepts links, can do multiple is seperated with spaces or commas. i.e 'x.com/123 x.com/321'")
+@app_commands.describe(message="Message bot will add onto the end so you don't need to type two messages. Optional")
+async def spoil(interaction: discord.Interaction, link: str, message : str = None): 
     fullstring = interaction.user.display_name + " has posted\n"
     fullstring += returnSpoiledSingleLink(link)
+    if(message != None):
+        fullstring += "\n" + message 
     await interaction.response.send_message(fullstring, silent = True)
     
 @client.event
 async def on_ready():
-    await tree.sync(guild=id)
+    #await tree.sync() #uncomment when change is made I guess
     print(f'We have logged in as {client.user}')
 
 @client.event

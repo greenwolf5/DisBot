@@ -88,18 +88,25 @@ def returnFormattedLinks(unformattedLinks):
     
 #This is made for the /embed command
 def returnSingleLink(singleLink):
-    for originalWebsiteName in linkDictionary: 
+    splitLink = re.split("[ ,]",singleLink) #'single link' is legacy, this is to allow multiple separated by spaces (or I guess comma's too?) i.e x.com/321 x.com/321
+    returnedString = ""
+    for singledLink in splitLink:
+        for originalWebsiteName in linkDictionary: 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
-                if(originalWebsiteName in singleLink):
-                    return (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName)+8:]})\n')
-                
+                if(originalWebsiteName in singledLink):
+                    returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:]})\n')
+    return returnedString
     
 #This is made for the /spoil command            
 def returnSpoiledSingleLink(singleLink):
-    for originalWebsiteName in linkDictionary: 
+    splitLink = re.split("[ ,]",singleLink) #'single link' is legacy, this is to allow multiple separated by spaces (or I guess comma's too?) i.e x.com/321 x.com/321
+    returnedString = ""
+    for singledLink in splitLink:
+        for originalWebsiteName in linkDictionary: 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
-                if(originalWebsiteName in singleLink):
-                    return (f'||https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName)+8:]}||')
+                if(originalWebsiteName in singledLink):
+                    returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:]})||\n')
+    return returnedString
 #The other most complicated method, as it returns two variables
 #FreeMessages, which is all the lines said by the user
 #Twitter links which is all of the links said by the user.
@@ -170,7 +177,7 @@ def regexLinesIntoList(stringToRegex):
                 
         nonEmptyFreeMessages = []
         for message in freeMessages:    
-            if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n"): #please make this better, I don't need to check the first index b/c it is special
+            if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n" and message != "||" and message != " ||" and message != "|| "): #please make this better, I don't need to check the first index b/c it is special
                 regexSplit = re.split(r" |\|", message)                
                 noBadSpaces = ""
                 for word in regexSplit:
