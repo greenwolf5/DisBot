@@ -13,6 +13,9 @@ listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId]
 keyWordDictionary = {}
 responseDictonary = {}
 
+keyWordDictionary[0] = ["Jerby"]
+keyWordDictionary[0] = ["NOT WHAT I'M CALLED!"]
+
 keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvGasms:1040264733737095299>']
 responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>']]
 
@@ -38,7 +41,10 @@ def checkKnownUser(id):
         return False
     
 def containsKeyword(message, id):
-    listOfKeywords = keyWordDictionary[id]
+    if(keyWordDictionary[0].Contains(message)):
+        listOfKeywords = keyWordDictionary[0]
+    else:
+        listOfKeywords = keyWordDictionary[id]
     responseMessage = ""
     isReaction = False
     message = str.lower(message)
