@@ -8,13 +8,14 @@ slyId = int(config['USERS']['SlyId'])
 ponId = int(config['USERS']['PonId'])
 kodahnId = int(config['USERS']['KodahnId'])
 katId = int(config['USERS']['KatId'])
+jerbId = int(config['USERS']['JerbId'])
 listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId]
 
 keyWordDictionary = {}
 responseDictonary = {}
 
-keyWordDictionary[0] = ["Jerby"]
-keyWordDictionary[0] = ["NOT WHAT I'M CALLED!"]
+keyWordDictionary[0] = ["jerby"]
+responseDictonary[0] = [[False, jerbId, "https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"]]
 
 keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvGasms:1040264733737095299>']
 responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>']]
@@ -41,21 +42,30 @@ def checkKnownUser(id):
         return False
     
 def containsKeyword(message, id):
-    if(keyWordDictionary[0].Contains(message)):
-        listOfKeywords = keyWordDictionary[0]
-    else:
-        listOfKeywords = keyWordDictionary[id]
-    responseMessage = ""
-    isReaction = False
     message = str.lower(message)
+    isReaction = False
+    responseMessage = ""
+    listOfKeywords = keyWordDictionary[0]
     for i in range(0,len(listOfKeywords)):
         if(message.__contains__(str.lower(listOfKeywords[i]))):
-            if(responseDictonary[id][i][0] != True):
-                responseMessage += f"{responseDictonary[id][i]} "
-            else:
-                isReaction = True
-                responseMessage = f"{responseDictonary[id][i][1]}" 
-    return responseMessage, isReaction
+            if(responseDictonary[0][i][1] != id):
+                if(responseDictonary[0][i][0] != True):
+                    responseMessage += f"{responseDictonary[0][i][2]} "
+                else:
+                    isReaction = True
+                    responseMessage = f"{responseDictonary[0][i][2]}" 
+    if(responseMessage == ""):    
+        listOfKeywords = keyWordDictionary[id]
+        for i in range(0,len(listOfKeywords)):
+            if(message.__contains__(str.lower(listOfKeywords[i]))):
+                if(responseDictonary[id][i][0] != True):
+                    responseMessage += f"{responseDictonary[id][i]} "
+                else:
+                    isReaction = True
+                    responseMessage = f"{responseDictonary[id][i][1]}" 
+        return responseMessage, isReaction
+    else:
+        return responseMessage, isReaction
 
 #How go about saving keyWords and responses?
 #I want something like 
