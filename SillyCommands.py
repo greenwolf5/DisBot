@@ -58,7 +58,7 @@ def containsKeyword(message, id):
         if(message.__contains__(str.lower(listOfKeywords[i]))):
             if(responseDictonary[0][i][1] != id):
                 if(responseDictonary[0][i][0] != True):
-                    random_number = random.randInt(1,responseDictonary[0][i][2])
+                    random_number = random.randInt(1,len(responseDictonary[0][i][2]))
                     random_number = random_number - 1
                     responseMessage += f"{responseDictonary[0][i][2][random_number]}"
                 else:
