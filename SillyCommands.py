@@ -9,16 +9,17 @@ ponId = int(config['USERS']['PonId'])
 kodahnId = int(config['USERS']['KodahnId'])
 katId = int(config['USERS']['KatId'])
 jerbId = int(config['USERS']['JerbId'])
-listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId]
+ashleyId = int(config["USERS"]['AshleyId'])
+listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId, jerbId,ashleyId]
 
 keyWordDictionary = {}
 responseDictonary = {}
 
-keyWordDictionary[0] = ["jerby"]
-responseDictonary[0] = [[False, jerbId, "https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"]]
+keyWordDictionary[0] = ["jerby","Chaos","Skill issue",'uwu',"Shit"]
+responseDictonary[0] = [[False, jerbId, "https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"],[False,0,"https://images-ext-1.discordapp.net/external/fqP6WElHyUq2-mCKklSVdTQlYGUQ0kNcmd8mT71mElU/https/media.tenor.com/z_KoI0-y7rEAAAPo/chaos.mp4"],[True,0,"<:childeSkillIssue:939656128684498994>"],[False,0,"<a:6728_DiscordUwU:679524982493020168>"],[True,0,"<:letsfuckingshit:1221664187797868634>"]]
 
-keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvGasms:1040264733737095299>']
-responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>']]
+keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvervaleGasms:1040264733737095299>',"<a:HUH:1049736597551194162>"]
+responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>'],"<:uneedjesus:662380798279680013>"]
 
 keyWordDictionary[reshId] = ["hell yeah brother", "frfr", "on god", "no cap", "straight facts", "bruh", '<:SmugCat:784283846447202314>']
 responseDictonary[reshId] = ["hell yeah indeed brother\n", "frfr", "on god", "no cap", "straight facts", "bruh", [True, '<:SmugCat:784283846447202314>']]
@@ -26,14 +27,20 @@ responseDictonary[reshId] = ["hell yeah indeed brother\n", "frfr", "on god", "no
 keyWordDictionary[slyId] = ["tldr"]
 responseDictonary[slyId] = ["OH GOD NOT A SLY TLDR!"]
 
-keyWordDictionary[ponId] = ["ope", "chipi chipi"]
-responseDictonary[ponId] = ["HE SAID OPE!", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
+keyWordDictionary[ponId] = ["ope", "chipi chipi","Sat rex","Little shit"]
+responseDictonary[ponId] = ["HE SAID OPE!", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564","https://tenor.com/view/jane-doe-zenless-zone-zero-gif-16720528248315404314", "yeah, you tell 'em!"]
 
 keyWordDictionary[kodahnId] = ["oh shit", "chipi chipi", '🫠', "nini","fix pls"]
 responseDictonary[kodahnId] = ["shit oh?", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564", [True, '🫠'], "https://tenor.com/view/have-a-nice-day-good-sunday-gif-1674652217239459225","how about you get off instagram, nerd"]
 
 keyWordDictionary[katId] = ["chipi chipi"]
 responseDictonary[katId] = ["https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
+
+keyWordDictionary[jerbId] = []
+responseDictonary[jerbId] = []
+
+keyWordDictionary[ashleyId] = ["Ope"]
+keyWordDictionary[ashleyId] = ["SHE SAID OPE!"]
 
 def checkKnownUser(id):
     if(id in listKnownUsers):
