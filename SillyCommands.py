@@ -17,7 +17,7 @@ keyWordDictionary = {}
 responseDictonary = {}
 
 keyWordDictionary[0] = ["jerby","Chaos","Skill issue",'uwu',"Shit"]
-responseDictonary[0] = [[False, jerbId, ["https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"]],[False,0,["https://images-ext-1.discordapp.net/external/fqP6WElHyUq2-mCKklSVdTQlYGUQ0kNcmd8mT71mElU/https/media.tenor.com/z_KoI0-y7rEAAAPo/chaos.mp4"]],[True,0,"<:childeSkillIssue:939656128684498994>"],[False,0,["<a:6728_DiscordUwU:679524982493020168>","https://cdn.discordapp.com/attachments/1164308207733313586/1408269045534294038/image.png?ex=68a92040&is=68a7cec0&hm=13267cef467a10bc473a176be40d6ebdd11d91759102734c2bf0408686ea3455&"]],[True,0,"<:letsfuckingshit:1221664187797868634>"]]
+responseDictonary[0] = [[False, jerbId, ["https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"]],[False,0,["https://images-ext-1.discordapp.net/external/fqP6WElHyUq2-mCKklSVdTQlYGUQ0kNcmd8mT71mElU/https/media.tenor.com/z_KoI0-y7rEAAAPo/chaos.mp4"]],[True,0,"<:childeSkillIssue:939656128684498994>"],[False,0,["<a:6728_DiscordUwU:679524982493020168>","https://cdn.discordapp.com/attachments/1164308207733313586/1408269045534294038/image.png?ex=68a92040&is=68a7cec0&hm=13267cef467a10bc473a176be40d6ebdd11d91759102734c2bf0408686ea3455&","https://media.discordapp.net/attachments/1164308207733313586/1408271170054262794/image.png?ex=68a9223b&is=68a7d0bb&hm=28ad4b617043ea807ed9fdc25b239bb28405cfe2999eee89678b02b168260a95&=&format=webp&quality=lossless"]],[True,0,"<:letsfuckingshit:1221664187797868634>"]]
 
 keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvervaleGasms:1040264733737095299>',"<a:HUH:1049736597551194162>"]
 responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>'],"<:uneedjesus:662380798279680013>"]
@@ -58,7 +58,7 @@ def containsKeyword(message, id):
         if(message.__contains__(str.lower(listOfKeywords[i]))):
             if(responseDictonary[0][i][1] != id):
                 if(responseDictonary[0][i][0] != True):
-                    random_number = random.randInt(1,len(responseDictonary[0][i][2]))
+                    random_number = random.randint(1,len(responseDictonary[0][i][2]))
                     random_number = random_number - 1
                     responseMessage += f"{responseDictonary[0][i][2][random_number]}"
                 else:
