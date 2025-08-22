@@ -11,7 +11,8 @@ kodahnId = int(config['USERS']['KodahnId'])
 katId = int(config['USERS']['KatId'])
 jerbId = int(config['USERS']['JerbId'])
 ashleyId = int(config["USERS"]['AshleyId'])
-listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId, jerbId, ashleyId]
+sageId = int(config["USERS"]['SageId'])
+listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId, jerbId, ashleyId,sageId]
 
 keyWordDictionary = {}
 responseDictonary = {}
@@ -42,6 +43,10 @@ responseDictonary[jerbId] = []
 
 keyWordDictionary[ashleyId] = ["Ope"]
 responseDictonary[ashleyId] = ["SHE SAID OPE!"]
+
+keyWordDictionary[sageId] = ["Ope"]
+responseDictonary[sageId] = ["SHE SAID OPE!"]
+
 
 def checkKnownUser(id):
     if(id in listKnownUsers):
