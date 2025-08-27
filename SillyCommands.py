@@ -29,8 +29,8 @@ uwuDict = ["<a:6728_DiscordUwU:679524982493020168>",
 keyWordDictionary[0] = ["jerby","Chaos","Skill issue",'uwu',"Shit"]
 responseDictonary[0] = [[False, jerbId, ["https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"]],[False,0,["https://tenor.com/bIkyP.gif"]],[True,0,["<:childeSkillIssue:939656128684498994>"]],[False,0,uwuDict],[True,0,[[50,"<:letsfuckingshit:1221664187797868634>"]]]]
 
-keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvervaleGasms:1040264733737095299>',"お前はゲーだよ","skill issueだよ","おっぱい","しょうがない","残念だ","ザーコ"]
-responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>'],"He called you gay btw","(you have a skill issue)","Yeah I'm not translating that one","It can't be helped","What a shame","Noob"]
+keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvervaleGasms:1040264733737095299>',"お前はゲーだよ","skill issueだよ","おっぱい","しょうがない","残念だ","ザーコ","太ももを見て！"]
+responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>'],"He called you gay btw","(you have a skill issue)","Yeah I'm not translating that one","It can't be helped","What a shame","Noob","Pon look, there's thighs!"]
 
 keyWordDictionary[reshId] = ["hell yeah brother", "frfr", "on god", "no cap", "straight facts", "bruh", '<:SmugCat:784283846447202314>']
 responseDictonary[reshId] = ["hell yeah indeed brother\n", "frfr", "on god", "no cap", "straight facts", "bruh", [True, '<:SmugCat:784283846447202314>']]
