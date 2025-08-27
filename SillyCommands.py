@@ -27,7 +27,7 @@ uwuDict = ["<a:6728_DiscordUwU:679524982493020168>",
            "https://media.discordapp.net/attachments/1164308207733313586/1410051672272539788/image.png?ex=68af9c74&is=68ae4af4&hm=f9901fe60d81bde11145a04cb6aea9efb3420edc194bf7345edcf11eab037cf0&=&format=webp&quality=lossless"]
 
 keyWordDictionary[0] = ["jerby","Chaos","Skill issue",'uwu',"Shit"]
-responseDictonary[0] = [[False, jerbId, ["https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"]],[False,0,["https://tenor.com/bIkyP.gif"]],[True,0,"<:childeSkillIssue:939656128684498994>"],[False,0,uwuDict],[True,0,"<:letsfuckingshit:1221664187797868634>"]]
+responseDictonary[0] = [[False, jerbId, ["https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"]],[False,0,["https://tenor.com/bIkyP.gif"]],[True,0,["<:childeSkillIssue:939656128684498994>"]],[False,0,uwuDict],[True,0,[[50,"<:letsfuckingshit:1221664187797868634>"]]]]
 
 keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvervaleGasms:1040264733737095299>',"お前はゲーだよ","skill issueだよ","おっぱい","しょうがない","残念だ","ザーコ"]
 responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>'],"He called you gay btw","(you have a skill issue)","Yeah I'm not translating that one","It can't be helped","What a shame","Noob"]
@@ -66,18 +66,29 @@ def checkKnownUser(id):
 def containsKeyword(message, id):
     message = str.lower(message)
     isReaction = False
+    passCheck = False
     responseMessage = ""
     listOfKeywords = keyWordDictionary[0]
     for i in range(0,len(listOfKeywords)):
-        if(message.__contains__(str.lower(listOfKeywords[i]))):
+        if(isinstance(listOfKeywords[i],str)):
+            if(message.__contains__(str.lower(listOfKeywords[i]))):
+                passCheck = True
+        if(passCheck):
             if(responseDictonary[0][i][1] != id):
-                if(responseDictonary[0][i][0] != True):
-                    random_number = random.randint(1,len(responseDictonary[0][i][2]))
-                    random_number = random_number - 1
-                    responseMessage += f"{responseDictonary[0][i][2][random_number]}"
+                random_number = random.randint(1,len(responseDictonary[0][i][2]))
+                random_number = random_number - 1
+                if(isinstance(responseDictonary[0][i][2][random_number][0], int)):
+                    random_number2 = random.randint(1,responseDictonary[0][i][2][random_number][0])
+                    if(random_number2 == responseDictonary[0][i][2][random_number][0]):
+                        isReaction = responseDictonary[0][i][0]
+                        responseMessage += responseDictonary[0][i][2][random_number][1]
+                        return responseMessage, isReaction
+                    else:
+                        return "", False
                 else:
-                    isReaction = True
-                    responseMessage = f"{responseDictonary[0][i][2]}" 
+                    isReaction = responseDictonary[0][i][0]
+                    responseMessage += f"{responseDictonary[0][i][2][random_number]}"
+                    return responseMessage, isReaction
     if(responseMessage == ""):    
         listOfKeywords = keyWordDictionary[id]
         for i in range(0,len(listOfKeywords)):
