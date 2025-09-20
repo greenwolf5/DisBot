@@ -16,10 +16,10 @@ REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}|{TIKTOK}|{TIKTOK_TWO}|{REDDIT}|{PIXI
 #These are the links that we are switching the links to.
 TWITTER_LINK = "fxtwitter.com/"
 XCOM_LINK = "fixupx.com/"
-INSTAGRAM_LINK = "www.instagramez.com/"
+INSTAGRAM_LINK = "www.d.vxinstagram.com/"
 TIKTOK_LINK = "vxtiktok.com/"
 TIKTOK_TWO_LINK ="vxtiktok.com/t/"
-REDDIT_LINK = "rxddit.com/"
+REDDIT_LINK = "redditez.com/"
 PIXIV_LINK = "phixiv.net/"
 
 #This dictonary pairs the og link and the new link together for easy searching.
