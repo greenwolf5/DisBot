@@ -1,6 +1,7 @@
 
 import configparser
 import random
+from typing import List, Tuple
 config = configparser.ConfigParser()
 config.read('config.ini')
 greenId = int(config['USERS']['GreenId'])
@@ -14,9 +15,18 @@ ashleyId = int(config["USERS"]['AshleyId'])
 sageId = int(config["USERS"]['SageId'])
 listKnownUsers = [greenId, reshId, slyId, ponId, kodahnId, katId, jerbId, ashleyId,sageId]
 
-keyWordDictionary = {}
-responseDictonary = {}
-
+class KeywordObject:
+    def __init__(self):
+        pass
+class ResponseObject:
+    def __init__(self, WhoCanTrigger: int, ListOfTriggers: list ,ListOfResponses: list, IsReaction = False, ProbabilityForResponse = 1, IdToIgnore = 0):
+        self.WhoCanTrigger = WhoCanTrigger
+        self.ListOfTriggers = ListOfTriggers
+        self.ListOfResponses = ListOfResponses
+        self.IsReaction = IsReaction
+        self.ProbabilityForResponse = ProbabilityForResponse
+        self.IdToIgnore = IdToIgnore
+#?, IdToIgnore, List of responses, probability for a response
 
 uwuDict = ["<a:6728_DiscordUwU:679524982493020168>",
            "https://cdn.discordapp.com/attachments/1164308207733313586/1408269045534294038/image.png?ex=68a92040&is=68a7cec0&hm=13267cef467a10bc473a176be40d6ebdd11d91759102734c2bf0408686ea3455&",
@@ -27,96 +37,92 @@ uwuDict = ["<a:6728_DiscordUwU:679524982493020168>",
            "https://media.discordapp.net/attachments/1164308207733313586/1410051672272539788/image.png?ex=68af9c74&is=68ae4af4&hm=f9901fe60d81bde11145a04cb6aea9efb3420edc194bf7345edcf11eab037cf0&=&format=webp&quality=lossless",
            "https://cdn.discordapp.com/attachments/1164308207733313586/1431673874814341311/image.png?ex=68fe45b2&is=68fcf432&hm=65790bd9c26da0478a3c5cb1974df393cbff1906f7f6b00e931dd10d7044751e&"]
 
-keyWordDictionary[0] = ["jerby","Chaos","Skill issue",'uwu',"Shit","yr'oue"]
-responseDictonary[0] = [[False, jerbId, ["https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"]],[False,0,["https://tenor.com/bIkyP.gif"]],[True,0,["<:childeSkillIssue:939656128684498994>"]],[False,0,uwuDict],[True,0,[[50,"<:letsfuckingshit:1221664187797868634>"]]],[False,0,["https://tenor.com/view/youre-your-gif-22328611"]]]
+everyoneDictionary = [
+        #Everyone
+    ResponseObject(0, ["jerby"],["https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"],False, 100,jerbId),
+    ResponseObject(0, ["Chaos"],["https://tenor.com/bIkyP.gif"]),
+    ResponseObject(0, ["Skill issue"],["<:childeSkillIssue:939656128684498994>"],True),
+    ResponseObject(0, ["uwu"],uwuDict),
+    ResponseObject(0, ["Shit"],["<:letsfuckingshit:1221664187797868634>"],True,50),
+    ResponseObject(0, ["yr'oue"],["https://tenor.com/view/youre-your-gif-22328611"]),
+]
+testDictionary = [
+    #Green
+    ResponseObject(greenId, ["bitch bot"],["You fuckin' called?"]),
+    ResponseObject(greenId, ["いただきます"],["Fucking simp"]),
+    ResponseObject(greenId, ['<a:SilvervaleGasms:1040264733737095299>'],['<:WTF:637454072164646922>'],True),
+    ResponseObject(greenId, ["お前はゲーだよ"],["He called you gay btw"], False),
+    ResponseObject(greenId, ["skill issueだよ","スキールイッシューだよ","スキール問題だよ"],["(you have a skill issue)"]),
+    ResponseObject(greenId, ["おっぱい"],["Yeah, I'm not translating that one","You can translate that one yourself","..."]),
+    ResponseObject(greenId, ["しょうがない"],["It can't be helped"]),
+    ResponseObject(greenId, ["残電だ"],["What a shame","Unfortunate"]),
+    ResponseObject(greenId, ["ザーコ"],["Noob"],False),
+    ResponseObject(greenId, ["太ももを見て","太もも見て"],["Look, thighs!"]),
 
-keyWordDictionary[greenId] = ["bitch bot", "いただきます", '<a:SilvervaleGasms:1040264733737095299>',"お前はゲーだよ","skill issueだよ","おっぱい","しょうがない","残念だ","ザーコ","太ももを見て！"]
-responseDictonary[greenId] = ["You fuckin' called?\n", "Fucking simp\n", [True, '<:WTF:637454072164646922>'],"He called you gay btw","(you have a skill issue)","Yeah I'm not translating that one","It can't be helped","What a shame","Noob","Pon look, there's thighs!"]
+    #Resh
+    ResponseObject(reshId, ["hell yeah brother"],["hell yeah indeed brother"]),
+    ResponseObject(reshId, ["frfr"],["frfr"]),
+    ResponseObject(reshId, ["on god"], ["on god"]),
+    ResponseObject(reshId, ["no cap"],["no cap"]),
+    ResponseObject(reshId, ["straight facts"],["straight facts"]),
+    ResponseObject(reshId, ["bruh"],["bruh"]),
+    ResponseObject(reshId, ['<:SmugCat:784283846447202314>',],['<:SmugCat:784283846447202314>'],True),
+    ResponseObject(reshId, ["67"],["🤮"]),
 
-keyWordDictionary[reshId] = ["hell yeah brother", "frfr", "on god", "no cap", "straight facts", "bruh", '<:SmugCat:784283846447202314>']
-responseDictonary[reshId] = ["hell yeah indeed brother\n", "frfr", "on god", "no cap", "straight facts", "bruh", [True, '<:SmugCat:784283846447202314>']]
+    #Sly
+    ResponseObject(slyId, ["tldr"],["OH GOD NOT A SLY TLDR!"]),
 
-keyWordDictionary[slyId] = ["tldr"]
-responseDictonary[slyId] = ["OH GOD NOT A SLY TLDR!"]
+    #Pon
+    ResponseObject(ponId, ["ope"],["HE SAID OPE!"]),
+    ResponseObject(ponId, ["chipi chipi"],["https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]),
+    ResponseObject(ponId, ["Sat rex"], ["https://tenor.com/view/jane-doe-zenless-zone-zero-gif-16720528248315404314"]),
+    ResponseObject(ponId, ["Little shit"], ["Yeah, you tell 'em!"]),
 
-keyWordDictionary[ponId] = ["ope", "chipi chipi","Sat rex","Little shit"]
-responseDictonary[ponId] = ["HE SAID OPE!", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564","https://tenor.com/view/jane-doe-zenless-zone-zero-gif-16720528248315404314", "yeah, you tell 'em!"]
+    #Kodahn
+    ResponseObject(kodahnId, ["oh shit"], ["shit oh?"]),
+    ResponseObject(kodahnId, ["chipi chipi"], ["https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]),
+    ResponseObject(kodahnId, ["🫠"],["🫠"],True),
+    ResponseObject(kodahnId, ["nini"], ["https://tenor.com/view/have-a-nice-day-good-sunday-gif-1674652217239459225"]),
+    ResponseObject(kodahnId, ["fix plz"],["How about you get off instagram, you nerd"]),
 
-keyWordDictionary[kodahnId] = ["oh shit", "chipi chipi", '🫠', "nini","fix pls"]
-responseDictonary[kodahnId] = ["shit oh?", "https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564", [True, '🫠'], "https://tenor.com/view/have-a-nice-day-good-sunday-gif-1674652217239459225","how about you get off instagram, nerd"]
+    #Kat
+    ResponseObject(katId, ["chipi chipi"], ["https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]),
 
-keyWordDictionary[katId] = ["chipi chipi"]
-responseDictonary[katId] = ["https://tenor.com/view/chipi-chapa-chipi-chipi-chipi-chipi-cat-chipi-chipi-dancing-cat-gif-10997735880837555564"]
+    #Ashley
+    ResponseObject(ashleyId, ["Ope"], ["SHE SAID OPE!"]),
 
-keyWordDictionary[jerbId] = []
-responseDictonary[jerbId] = []
-
-keyWordDictionary[ashleyId] = ["Ope"]
-responseDictonary[ashleyId] = ["SHE SAID OPE!"]
-
-keyWordDictionary[sageId] = ["Ope"]
-responseDictonary[sageId] = ["SHE SAID OPE!"]
+    #Sage
+    ResponseObject(sageId, ["Ope"], ["SHE SAID OPE"]),
+    ]
 
 
-def checkKnownUser(id):
-    if(id in listKnownUsers):
-        return True
-    else:
-        return False
-    
-def containsKeyword(message, id):
-    message = str.lower(message)
+def containsKeyword2(message, id):
+    message = message.lower()
+    response = ""
     isReaction = False
-    passCheck = False
-    responseMessage = ""
-    listOfKeywords = keyWordDictionary[0]
-    for i in range(0,len(listOfKeywords)):
-        if(isinstance(listOfKeywords[i],str)):
-            if(message.__contains__(str.lower(listOfKeywords[i]))):
-                passCheck = True
-        if(passCheck):
-            if(responseDictonary[0][i][1] != id):
-                random_number = random.randint(1,len(responseDictonary[0][i][2]))
-                random_number = random_number - 1
-                if(isinstance(responseDictonary[0][i][2][random_number][0], int)):
-                    random_number2 = random.randint(1,responseDictonary[0][i][2][random_number][0])
-                    if(random_number2 == responseDictonary[0][i][2][random_number][0]):
-                        isReaction = responseDictonary[0][i][0]
-                        responseMessage += responseDictonary[0][i][2][random_number][1]
-                        return responseMessage, isReaction
-                    else:
-                        return "", False
-                else:
-                    isReaction = responseDictonary[0][i][0]
-                    responseMessage += f"{responseDictonary[0][i][2][random_number]}"
-                    return responseMessage, isReaction
-    if(responseMessage == ""):    
-        listOfKeywords = keyWordDictionary[id]
-        for i in range(0,len(listOfKeywords)):
-            if(message.__contains__(str.lower(listOfKeywords[i]))):
-                if(responseDictonary[id][i][0] != True):
-                    responseMessage += f"{responseDictonary[id][i]}"
-                else:
-                    isReaction = True
-                    responseMessage = f"{responseDictonary[id][i][1]}" 
-        return responseMessage, isReaction
-    else:
-        return responseMessage, isReaction
+    # check everyone
+    for i in range(len(everyoneDictionary)):
+        resp, is_reaction = FindResponseHelper(message, everyoneDictionary, i)
+        if resp:
+            return resp, is_reaction
+    # check user-specific
+    for i in range(len(testDictionary)):
+        if testDictionary[i].WhoCanTrigger == id:
+            resp, is_reaction = FindResponseHelper(message, testDictionary, i)
+            if resp:
+                response += resp + " "
+                isReaction = is_reaction
+    return response, isReaction
 
-#How go about saving keyWords and responses?
-#I want something like 
-#listOfKeywords = []
-#responseMessage = ""
-#for keyWord in listOfKeyWords
-#if(message.__contains__(keyWord)):
-#responseMessage += 
-
-
-"""#I want:
-# A list that has a key, preferibly user
-# The value can be all the keywords attatched to that user
-# i.e key: greenId, value = ["bitch bot", "いただきます"]
-# Then how response? I could do greenId_bitch bot
-# but spaces will ruin that idea if the message has one hmm...
-# Maybe I have the responseList be key greenId, value match index: ["You fuckin' called?", "Stop simping already"]
-# """
+def FindResponseHelper(message: str, listToCheck: List['ResponseObject'], i: int) -> Tuple[str, bool]:
+    triggers = listToCheck[i].ListOfTriggers
+    for j in range(len(triggers)):
+        if str(triggers[j]).lower() in message:
+            prob = listToCheck[i].ProbabilityForResponse or 1
+            if random.randint(1, prob) == prob:
+                responses = listToCheck[i].ListOfResponses
+                if not responses:
+                    return "", listToCheck[i].IsReaction
+                return random.choice(responses), listToCheck[i].IsReaction
+            return "", False
+    return "", False

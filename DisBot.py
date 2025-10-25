@@ -78,7 +78,7 @@ async def on_message(message):
                 #if ((tupleCompleteAndFreeMessages[1]) != None):
                 #    await message.channel.send("\n".join(tupleCompleteAndFreeMessages[1]))
         # if(checkKnownUser(message.author.id) == True):
-        responseMessage, isReaction = containsKeyword(message.content, message.author.id)
+        responseMessage, isReaction = containsKeyword2(message.content, message.author.id)
         if(responseMessage != ''):
             if(isReaction != True):
                 await message.reply(responseMessage, allowed_mentions=discord.AllowedMentions.none(), silent = True)
