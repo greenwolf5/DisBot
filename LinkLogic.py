@@ -17,8 +17,8 @@ REGEXLINKS = f"{XCOM}|{TWITTER}|{INSTAGRAM}|{TIKTOK}|{TIKTOK_TWO}|{REDDIT}|{PIXI
 TWITTER_LINK = "fxtwitter.com/"
 XCOM_LINK = "fixupx.com/"
 INSTAGRAM_LINK = "www.d.vxinstagram.com/"
-TIKTOK_LINK = "vxtiktok.com/"
-TIKTOK_TWO_LINK ="vxtiktok.com/t/"
+TIKTOK_LINK = "d.tnktok.com/"
+TIKTOK_TWO_LINK ="d.tnktok.com/"
 REDDIT_LINK = "redditez.com/"
 PIXIV_LINK = "phixiv.net/"
 
