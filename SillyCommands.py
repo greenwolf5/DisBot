@@ -55,7 +55,7 @@ testDictionary = [
     ResponseObject(greenId, ["skill issueだよ","スキールイッシューだよ","スキール問題だよ"],["(you have a skill issue)"]),
     ResponseObject(greenId, ["おっぱい"],["Yeah, I'm not translating that one","You can translate that one yourself","..."]),
     ResponseObject(greenId, ["しょうがない"],["It can't be helped"]),
-    ResponseObject(greenId, ["残電だ"],["What a shame","Unfortunate"]),
+    ResponseObject(greenId, ["残念だ"],["What a shame","Unfortunate"]),
     ResponseObject(greenId, ["ザーコ"],["Noob"],False),
     ResponseObject(greenId, ["太ももを見て","太もも見て"],["Look, thighs!"]),
 
