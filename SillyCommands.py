@@ -37,6 +37,13 @@ uwuDict = ["<a:6728_DiscordUwU:679524982493020168>",
            "https://media.discordapp.net/attachments/1164308207733313586/1410051672272539788/image.png?ex=68af9c74&is=68ae4af4&hm=f9901fe60d81bde11145a04cb6aea9efb3420edc194bf7345edcf11eab037cf0&=&format=webp&quality=lossless",
            "https://cdn.discordapp.com/attachments/1164308207733313586/1431673874814341311/image.png?ex=68fe45b2&is=68fcf432&hm=65790bd9c26da0478a3c5cb1974df393cbff1906f7f6b00e931dd10d7044751e&"]
 
+realResponses = ["No, it's fake",
+                 "Of course it's real!",
+                 "I don't know. Ask again later.",
+                 "本当です！",
+                 "嘘です！",
+                 "とってもわからない、ごめんなさい"]
+
 everyoneDictionary = [
         #Everyone
     ResponseObject(0, ["jerby"],["https://media.discordapp.net/attachments/1096302219990663289/1406668974611239082/image.png?ex=68a34e12&is=68a1fc92&hm=1de68b6091f812cc1a83bddfef4d6fc31a3c57cc4ac7f38c6ddbc5bad14e6170&=&format=webp&quality=lossless"],False, 100,jerbId),
@@ -45,6 +52,7 @@ everyoneDictionary = [
     ResponseObject(0, ["uwu"],uwuDict),
     ResponseObject(0, ["Shit"],["<:letsfuckingshit:1221664187797868634>"],True,50),
     ResponseObject(0, ["yr'oue"],["https://tenor.com/view/youre-your-gif-22328611"]),
+    ResponseObject(0, ["@1163962704982192269 is this real"], realResponses),
 ]
 testDictionary = [
     #Green
