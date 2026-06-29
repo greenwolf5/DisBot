@@ -52,7 +52,7 @@ everyoneDictionary = [
     ResponseObject(0, ["uwu"],uwuDict),
     ResponseObject(0, ["Shit"],["<:letsfuckingshit:1221664187797868634>"],True,50),
     ResponseObject(0, ["yr'oue"],["https://tenor.com/view/youre-your-gif-22328611"]),
-    ResponseObject(0, ["@DisBot is this real"], realResponses),
+    ResponseObject(0, ["@1163962704982192269 is this real"], realResponses),
 ]
 testDictionary = [
     #Green
