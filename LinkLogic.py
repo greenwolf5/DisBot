@@ -86,29 +86,41 @@ def returnFormattedLinks(unformattedLinks):
                     if(isSpoiled):
                         spoilPart += "||"
                         shortedLink = "||"+shortedLink+"||"
-                    completeMessage += (f'{shortedLink}({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):]})\n')
+                    indexOfQuestionMark = singleLink.find("?")
+                    if(indexOfQuestionMark != -1):
+                        #If not found, just use the end of the link
+                        indexOfQuestionMark = len(singleLink)
+                    completeMessage += (f'{shortedLink}({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):indexOfQuestionMark]})\n')
     return completeMessage
     
 #This is made for the /embed command
-def returnSingleLink(singleLink):
+def returnSingleLink(singleLink, language):
     splitLink = re.split("[ ,]",singleLink) #'single link' is legacy, this is to allow multiple separated by spaces (or I guess comma's too?) i.e x.com/321 x.com/321
     returnedString = ""
     for singledLink in splitLink:
         for originalWebsiteName in linkDictionary: 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
                 if(originalWebsiteName in singledLink):
-                    returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:]})\n')
+                    indexOfQuestionMark = singleLink.find("?")
+                    if(indexOfQuestionMark == -1):
+                        #If not found, just use the end of the link
+                        indexOfQuestionMark = len(originalWebsiteName)
+                    returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:indexOfQuestionMark]}{"/" + language if language != None else "" })\n')
     return returnedString
     
 #This is made for the /spoil command            
-def returnSpoiledSingleLink(singleLink):
+def returnSpoiledSingleLink(singleLink, language):
     splitLink = re.split("[ ,]",singleLink) #'single link' is legacy, this is to allow multiple separated by spaces (or I guess comma's too?) i.e x.com/321 x.com/321
     returnedString = ""
     for singledLink in splitLink:
         for originalWebsiteName in linkDictionary: 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
                 if(originalWebsiteName in singledLink):
-                    returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:]})||\n')
+                    indexOfQuestionMark = singleLink.find("?")
+                    if(indexOfQuestionMark == -1):
+                        #If not found, just use the end of the link
+                        indexOfQuestionMark = len(originalWebsiteName)
+                    returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:indexOfQuestionMark]}{"/" + language if language != None else "" })||\n')
     return returnedString
 #The other most complicated method, as it returns two variables
 #FreeMessages, which is all the lines said by the user

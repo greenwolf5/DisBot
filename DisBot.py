@@ -37,10 +37,11 @@ id = discord.Object(serverId)
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True) 
 @app_commands.describe(link="Accepts links, can do multiple is seperated with spaces or commas. i.e 'x.com/123 x.com/321'")
+@app_commands.describe(language="Language for the embedded content, type the two-letter ISO 639-1 language code, any incorrect code will not translate. i.e 'en' for English, 'ja' for Japanese, 'es' for Spanish")
 @app_commands.describe(message="Message bot will add onto the end so you don't need to type two messages. Optional")
-async def embed(interaction: discord.Interaction, link: str, message : str = None): 
+async def embed(interaction: discord.Interaction, link: str, language: str = None, message : str = None): 
     fullstring = interaction.user.display_name + " has posted\n"
-    fullstring += returnSingleLink(link)
+    fullstring += returnSingleLink(link, language)
     if(message != None):
         fullstring += "\n" + message 
     await interaction.response.send_message(fullstring, silent = True)
@@ -49,10 +50,12 @@ async def embed(interaction: discord.Interaction, link: str, message : str = Non
 @app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True) 
 @app_commands.describe(link="Accepts links, can do multiple is seperated with spaces or commas. i.e 'x.com/123 x.com/321'")
+@app_commands.describe(language="Language for the embedded content, type the two-letter ISO 639-1 language code, any incorrect code will not translate. i.e 'en' for English, 'ja' for Japanese, 'es' for Spanish")    
 @app_commands.describe(message="Message bot will add onto the end so you don't need to type two messages. Optional")
-async def spoil(interaction: discord.Interaction, link: str, message : str = None): 
+async def spoil(interaction: discord.Interaction, link: str, language: str = None, message : str = None): 
     fullstring = interaction.user.display_name + " has posted\n"
-    fullstring += returnSpoiledSingleLink(link)
+
+    fullstring += returnSpoiledSingleLink(link, language)
     if(message != None):
         fullstring += "\n" + message 
     await interaction.response.send_message(fullstring, silent = True)
@@ -134,7 +137,5 @@ async def on_raw_message_edit(rawMessage):
                             else:
                                 await botFollowUpMessage.delete()
                     return
-                                
-                    
                     
 client.run(open('TOKEN.bottoken','r').read())
