@@ -87,7 +87,7 @@ def returnFormattedLinks(unformattedLinks):
                         spoilPart += "||"
                         shortedLink = "||"+shortedLink+"||"
                     indexOfQuestionMark = singleLink.find("?")
-                    if(indexOfQuestionMark != -1):
+                    if(indexOfQuestionMark == -1):
                         #If not found, just use the end of the link
                         indexOfQuestionMark = len(singleLink)
                     completeMessage += (f'{shortedLink}({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):indexOfQuestionMark + 1]})\n')
