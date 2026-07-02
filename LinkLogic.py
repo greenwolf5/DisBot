@@ -90,7 +90,7 @@ def returnFormattedLinks(unformattedLinks):
                     if(indexOfQuestionMark != -1):
                         #If not found, just use the end of the link
                         indexOfQuestionMark = len(singleLink)
-                    completeMessage += (f'{shortedLink}({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):indexOfQuestionMark]})\n')
+                    completeMessage += (f'{shortedLink}({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[len(originalWebsiteName):indexOfQuestionMark + 1]})\n')
     return completeMessage
     
 #This is made for the /embed command
@@ -105,7 +105,7 @@ def returnSingleLink(singleLink, language):
                     if(indexOfQuestionMark == -1):
                         #If not found, just use the end of the link
                         indexOfQuestionMark = len(originalWebsiteName)
-                    returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:indexOfQuestionMark]}{"/" + language if language != None else "" })\n')
+                    returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:indexOfQuestionMark + 1]}{"/" + language if language != None else "" })\n')
     return returnedString
     
 #This is made for the /spoil command            
@@ -120,7 +120,7 @@ def returnSpoiledSingleLink(singleLink, language):
                     if(indexOfQuestionMark == -1):
                         #If not found, just use the end of the link
                         indexOfQuestionMark = len(originalWebsiteName)
-                    returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:indexOfQuestionMark]}{"/" + language if language != None else "" })||\n')
+                    returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:indexOfQuestionMark + 1]}{"/" + language if language != None else "" })||\n')
     return returnedString
 #The other most complicated method, as it returns two variables
 #FreeMessages, which is all the lines said by the user
