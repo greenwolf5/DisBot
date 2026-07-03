@@ -104,7 +104,7 @@ def returnSingleLink(singleLink, language):
                     indexOfQuestionMark = singleLink.find("?")
                     if(indexOfQuestionMark == -1):
                         #If not found, just use the end of the link
-                        indexOfQuestionMark = len(originalWebsiteName)
+                        indexOfQuestionMark = len(singledLink)
                     returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:indexOfQuestionMark]}{"/" + language if language != None else "" })\n')
     return returnedString
     
@@ -119,7 +119,7 @@ def returnSpoiledSingleLink(singleLink, language):
                     indexOfQuestionMark = singleLink.find("?")
                     if(indexOfQuestionMark == -1):
                         #If not found, just use the end of the link
-                        indexOfQuestionMark = len(originalWebsiteName)
+                        indexOfQuestionMark = len(singledLink)
                     returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[len(originalWebsiteName)+8:indexOfQuestionMark]}{"/" + language if language != None else "" })||\n')
     return returnedString
 #The other most complicated method, as it returns two variables
