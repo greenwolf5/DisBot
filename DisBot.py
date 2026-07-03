@@ -59,7 +59,20 @@ async def spoil(interaction: discord.Interaction, link: str, language: str = Non
     if(message != None):
         fullstring += "\n" + message 
     await interaction.response.send_message(fullstring, silent = True)
-    
+
+# Source - https://stackoverflow.com/a/74534324
+# Posted by TacoSnack
+# Retrieved 2026-07-03, License - CC BY-SA 4.0
+
+@tree.command(name='sync', description='Owner only')
+async def sync(interaction: discord.Interaction):
+    if interaction.user.id == int(config['USERS']['GreenId']):
+        await tree.sync()
+        print('Command tree synced.')
+    else:
+        await interaction.response.send_message('You must be the owner to use this command!')
+
+
 @client.event
 async def on_ready():
     #await tree.sync() #uncomment when change is made I guess
