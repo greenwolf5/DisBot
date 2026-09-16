@@ -20,7 +20,7 @@ XCOM_LINK = "fixupx.com/"
 INSTAGRAM_LINK = "www.oginstagram.com/"
 TIKTOK_LINK = "d.tnktok.com/"
 TIKTOK_TWO_LINK ="d.tnktok.com/"
-REDDIT_LINK = "redditez.com/"
+REDDIT_LINK = "vxreddit.com/"
 PIXIV_LINK = "phixiv.net/"
 BLUESKY_LINK = "bskx.app/"
 
