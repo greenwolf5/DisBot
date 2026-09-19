@@ -35,6 +35,9 @@ linkDictionary[REDDIT] = REDDIT_LINK
 linkDictionary[PIXIV] = PIXIV_LINK
 linkDictionary[BLUESKY] = BLUESKY_LINK
 
+#This is here because twitter for nsfw links is not allowing the link if it doesn't have the ?s=20 (which means from desktop?)
+keepTrackingInfo = true
+
 #Simple method that returns all of the links found that are supported
 def regexTwitterLinks(stringToRegex):
     #([\s\S]*?)(?P<LinkChecker>(?:http(?:s)?://)+(?:www.)?(?:x|twitter)\.com/(.\S*))([\s\S]*?)(?=(?:(?P=LinkChecker))|$) 
@@ -90,6 +93,8 @@ def returnFormattedLinks(unformattedLinks):
                     if(indexOfQuestionMark == -1):
                         #If not found, just use the end of the link
                         indexOfQuestionMark = len(singleLink)
+                    if (keepTrackingInfo):
+                        indexOfQuestionMark = len(singleLink)
                     completeMessage += (f'{shortedLink}({spoilPart}https://{linkDictionary[originalWebsiteName]}{singleLink[singleLink.find(originalWebsiteName) + len(originalWebsiteName):indexOfQuestionMark]})\n')
     return completeMessage
     
@@ -105,6 +110,8 @@ def returnSingleLink(singleLink, language):
                     if(indexOfQuestionMark == -1):
                         #If not found, just use the end of the link
                         indexOfQuestionMark = len(singledLink)
+                    if (keepTrackingInfo):
+                        indexOfQuestionMark = len(singleLink)
                     returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[singledLink.find(originalWebsiteName) + len(originalWebsiteName):indexOfQuestionMark]}{"/" + language if language != None else "" })\n')
     return returnedString
     
@@ -120,6 +127,8 @@ def returnSpoiledSingleLink(singleLink, language):
                     if(indexOfQuestionMark == -1):
                         #If not found, just use the end of the link
                         indexOfQuestionMark = len(singledLink)
+                    if (keepTrackingInfo):
+                        indexOfQuestionMark = len(singleLink)
                     returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[singledLink.find(originalWebsiteName) + len(originalWebsiteName):indexOfQuestionMark]}{"/" + language if language != None else "" })||\n')
     return returnedString
 #The other most complicated method, as it returns two variables
