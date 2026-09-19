@@ -36,7 +36,7 @@ linkDictionary[PIXIV] = PIXIV_LINK
 linkDictionary[BLUESKY] = BLUESKY_LINK
 
 #This is here because twitter for nsfw links is not allowing the link if it doesn't have the ?s=20 (which means from desktop?)
-keepTrackingInfo = true
+keepTrackingInfo = True
 
 #Simple method that returns all of the links found that are supported
 def regexTwitterLinks(stringToRegex):
