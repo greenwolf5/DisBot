@@ -47,31 +47,32 @@ def regexTwitterLinks(stringToRegex):
 #One of the most complicated methods as it returns two variables
 #Complete Message, which is the message of who posted it, the first line said by the user, then all of the links
 #FreeMessages, which is all of the lines said by the user that is *not* the links, including the first line.
-def getFormattedMessage(message, author):
+def getFormattedMessage(message, author)->tuple[str,list[str]]:
     #Regex to find if the message has either a twitter link or an x.com link the * means any character after the domain
     if(regexTwitterLinks(message.content) != []):
-        completeMessage = (f'{author} posted\n')
+        completeMessage = str(f'{author} posted\n')
         nonEmptyFreeMessages, unformattedLinks = regexLinesIntoList(message.content)
         firstMessage = getFirstMessage(nonEmptyFreeMessages)
-        if(firstMessage != None):
+        if(firstMessage != ""):
             completeMessage += firstMessage
         #if discord lets you put one spoil embed in with multiple non spoiler embeds, change the function "removeSpoiledMesages" into "spoiledSpoiledMessages"
         unformattedLinks = spoilSpoiledLinks(unformattedLinks, getSpoiledMessages(message.content))
         completeMessage += returnFormattedLinks(unformattedLinks)
-        if(completeMessage == ''):
-            completeMessage = None
-        return [completeMessage, nonEmptyFreeMessages]
+        return (completeMessage, nonEmptyFreeMessages)
+    else:
+        return ("",[""])
  
 #This grabs the first message from freeMessages, returns it to completeMessage, and then removes the first message from freeMessages
-def getFirstMessage(freeMessages):
+def getFirstMessage(freeMessages)-> str:
     tempString = ""
-    if(freeMessages != []): 
-            if(freeMessages[0] != ''):
-                tempString = freeMessages[0]
-                if(freeMessages[0][len(freeMessages[0])-1] != '\n'):
-                    tempString += '\n'
-                freeMessages.remove(freeMessages[0])
-                return tempString
+    if(freeMessages != [] and freeMessages[0] != ''):
+        tempString = freeMessages[0]
+        if(freeMessages[0][len(freeMessages[0])-1] != '\n'):
+            tempString += '\n'
+        freeMessages.remove(freeMessages[0])
+        return tempString
+    else:
+        return ""
 
 #This checks the links against the dictonary in order to get their proper new link
 def returnFormattedLinks(unformattedLinks):
@@ -81,10 +82,10 @@ def returnFormattedLinks(unformattedLinks):
             isSpoiled = False
             if(singleLink[len(singleLink)-1] == "|"):
                 isSpoiled = True
-            for originalWebsiteName in linkDictionary: 
+            for originalWebsiteName, value in linkDictionary.items(): 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
                 shortedLink = f"[{originalWebsiteName}]"
-                if((singleLink[:len(originalWebsiteName)] == originalWebsiteName)):
+                if(singleLink[:len(originalWebsiteName)] == originalWebsiteName):
                     spoilPart = ""
                     if(isSpoiled):
                         spoilPart += "||"
@@ -103,7 +104,7 @@ def returnSingleLink(singleLink, language):
     splitLink = re.split("[ ,]",singleLink) #'single link' is legacy, this is to allow multiple separated by spaces (or I guess comma's too?) i.e x.com/321 x.com/321
     returnedString = ""
     for singledLink in splitLink:
-        for originalWebsiteName in linkDictionary: 
+        for originalWebsiteName, value in linkDictionary.items(): 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
                 if(originalWebsiteName in singledLink):
                     indexOfQuestionMark = singleLink.find("?")
@@ -112,7 +113,7 @@ def returnSingleLink(singleLink, language):
                         indexOfQuestionMark = len(singledLink)
                     if (keepTrackingInfo):
                         indexOfQuestionMark = len(singleLink)
-                    returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[singledLink.find(originalWebsiteName) + len(originalWebsiteName):indexOfQuestionMark]}{"/" + language if language != None else "" })\n')
+                    returnedString += (f'[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[singledLink.find(originalWebsiteName) + len(originalWebsiteName):indexOfQuestionMark]}{"/" + language if language != "" else "" })\n')
     return returnedString
     
 #This is made for the /spoil command            
@@ -120,7 +121,7 @@ def returnSpoiledSingleLink(singleLink, language):
     splitLink = re.split("[ ,]",singleLink) #'single link' is legacy, this is to allow multiple separated by spaces (or I guess comma's too?) i.e x.com/321 x.com/321
     returnedString = ""
     for singledLink in splitLink:
-        for originalWebsiteName in linkDictionary: 
+        for originalWebsiteName, value in linkDictionary.items(): 
                 #This checks if link from the start to the length of the name matches; i.e if twitter.com/123 will match twitter by [:7]
                 if(originalWebsiteName in singledLink):
                     indexOfQuestionMark = singleLink.find("?")
@@ -129,12 +130,11 @@ def returnSpoiledSingleLink(singleLink, language):
                         indexOfQuestionMark = len(singledLink)
                     if (keepTrackingInfo):
                         indexOfQuestionMark = len(singleLink)
-                    returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[singledLink.find(originalWebsiteName) + len(originalWebsiteName):indexOfQuestionMark]}{"/" + language if language != None else "" })||\n')
+                    returnedString += (f'||[{originalWebsiteName}](https://{linkDictionary[originalWebsiteName]}{singledLink[singledLink.find(originalWebsiteName) + len(originalWebsiteName):indexOfQuestionMark]}{"/" + language if language != "" else "" })||\n')
     return returnedString
 #The other most complicated method, as it returns two variables
 #FreeMessages, which is all the lines said by the user
 #Twitter links which is all of the links said by the user.
-[DeprecationWarning]
 def regexFreeMessages(stringToRegex):
     #This regex is complicated; as it captures all lines before the link, and after the link, with no overlapping
     regex = fr"([\s\S]*?)(?:http(?:s)?://)+(?:www.)?((?:{REGEXLINKS}).\S*)([\s\S]*?)(?=(?:http(?:s)?://)+(?:www.)?(?:{REGEXLINKS}).\S*|$)([\s\S]*?)"
@@ -142,6 +142,7 @@ def regexFreeMessages(stringToRegex):
     freeMessages = []
     twitterLinks = []
     #lastMessages = []
+    nonEmptyFreeMessages = []
     #There are 3 matches, all messages before the link, the link, then all messages after the link.
     for matchList in matches:
         freeMessages.append(matchList[1])
@@ -162,7 +163,6 @@ def regexFreeMessages(stringToRegex):
         else:
             freeMessages[0] = ''
     if (freeMessages != []):  
-        nonEmptyFreeMessages = []
         for message in freeMessages:
             #This line removes any new line characters that are caught if you do "x.com/123\nx.com/321" freemessage[1] will be \n which is useless to send
             if(message != '' and message != "\n" and message != ' ' and message != "||\n||" and message != "\n||" and message != "||\n"): #please make this better, I don't need to check the first index b/c it is special
@@ -177,7 +177,7 @@ def regexFreeMessages(stringToRegex):
         nonEmptyFreeMessages = fixSpoiledMessages(listFreeMessages, nonEmptyFreeMessages)
     return nonEmptyFreeMessages, twitterLinks
 
-def regexLinesIntoList(stringToRegex):
+def regexLinesIntoList(stringToRegex)->tuple[list[str],list[str]]:
         twitterLinks = []
         freeMessages = []
         testList = stringToRegex.split("\n")
@@ -261,7 +261,6 @@ def fixSpoiledMessages(listFreeMessages, nonEmptyFreeMessages):
             nonEmptyFreeMessages.insert(index, f"||{sentence}||")
     return nonEmptyFreeMessages
 
-[DeprecationWarning]
 #This will remove links from the message to be sent if they have been spoiled
 #Depreciated as it got replaced with just sending a spoiled version with spoilSpoiledLinks
 def removeSpoiledLinks(unformattedLinks, spoiled):

@@ -1,6 +1,6 @@
 import configparser
 import random
-from typing import List, Tuple
+# from typing import List, Tuple
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -13,7 +13,7 @@ katId = int(config["USERS"]["KatId"])
 jerbId = int(config["USERS"]["JerbId"])
 ashleyId = int(config["USERS"]["AshleyId"])
 sageId = int(config["USERS"]["SageId"])
-winId = int(config["USERS"]["winId"])
+winId = int(config["USERS"]["WinId"])
 listKnownUsers = [
     greenId,
     reshId,
